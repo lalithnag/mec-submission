@@ -25,28 +25,25 @@
   <distill-header></distill-header>
   <d-front-matter>
     <script id='distill-front-matter' type="text/json">{
-    "title": "Why Momentum Really Works",
+    "title": "A journey into DataRealm",
     "description": "Although \" extremely useful for visualizing high-dimensional data, t-SNE plots can sometimes be mysterious or misleading.",
-    "published": "Jan 10, 2017",
+    "published": "Aug 9, 2023",
     "authors": [
       {
-        "author":"Chris Olah",
-        "authorURL":"https://colah.github.io/",
-        "affiliations": [{"name": "Google Brain"}]
+        "author":"Lalith Sharan",
+        "authorURL":"",
+        "affiliations": [{"name": "AICM, Heidelberg", "url": "https://www.klinikum.uni-heidelberg.de/chirurgische-klinik-zentrum/herzchirurgie/forschung/ag-artificial-intelligence-in-cardiovascular-medicine"}]
       },
       {
-        "author":"Ludwig Schubert",
+        "author":"Georgii Kostiuchik",
         "authorURL":"https://shancarter.com/",
-        "affiliations": [{"name": "Google Brain", "url": "https://g.co/brain"}]
-      },
+        "affiliations": [{"name": "AICM, Heidelberg", "url": "https://www.klinikum.uni-heidelberg.de/chirurgische-klinik-zentrum/herzchirurgie/forschung/ag-artificial-intelligence-in-cardiovascular-medicine"}]
+       },
       {
-        "author":"Shan Carter",
+        "author":"Sandy Engelhardt",
         "authorURL":"https://shancarter.com/",
-        "affiliations": [
-          {"name": "Google Brain", "url": "https://g.co/brain"},
-          {"name": "NYT", "url": "https://nytimes.com"}
-        ]
-      }
+        "affiliations": [{"name": "AICM, Heidelberg", "url": "https://www.klinikum.uni-heidelberg.de/chirurgische-klinik-zentrum/herzchirurgie/forschung/ag-artificial-intelligence-in-cardiovascular-medicine"}]
+         }
     ],
     "katex": {
       "delimiters": [
@@ -56,115 +53,66 @@
   }</script>
   </d-front-matter>
   <d-title>
-    <figure style="grid-column: page; margin: 1rem 0;"><img src="momentum.png"
-        style="width:100%; border: 1px solid rgba(0, 0, 0, 0.2);" /></figure>
-    <p>We often think of Momentum<d-cite key="mercier2011humans"></d-cite> as a means of dampening oscillations and
-      speeding up the iterations, leading to faster convergence. But it has other interesting behavior. It allows a
-      larger range of step-sizes to be used, and creates its own oscillations. What is going on?</p>
+    <p>This is a description of this article and a submission to the MICCAI Educational Challenge</p>
   </d-title>
   <d-byline></d-byline>
   <d-article>
     <a class="marker" href="#section-1" id="section-1"><span>1</span></a>
-    <h2>A Brief Survey of Techniques</h2>
-    <p>Before diving in: if you haven’t encountered t-SNE before, here’s what you need to know about the math behind it.
-      The goal is to take a set of points in a high-dimensional space and find a faithful representation of those points
-      in a lower-dimensional space, typically the 2D plane. The algorithm is non-linear and adapts to the underlying
-      data, performing different transformations on different regions. Those differences can be a major source of
-      confusion.</p>
-    <p>This is the first paragraph of the article. Test a long&thinsp;&mdash;&thinsp;dash -- here it is.</p>
-    <p>Test for owner's possessive. Test for "quoting a passage." And another sentence. Or two. Some flopping fins; for
-      diving.</p>
-    <aside>Some text in an aside, margin notes, etc...</aside>
-    <p>Here's a test of an inline equation <d-math>c = a^2 + b^2</d-math>. Also with configurable katex standards just
-      using inline '$' signs: $$x^2$$ And then there's a block equation:</p>
-    <d-math block>
-      c = \pm \sqrt{ \sum_{i=0}^{n}{a^{222} + b^2}}
-    </d-math>
-    <p>Math can also be quite involved:</p>
-    <d-math block>
-      \frac{1}{\Bigl(\sqrt{\phi \sqrt{5}}-\phi\Bigr) e^{\frac25 \pi}} = 1+\frac{e^{-2\pi}} {1+\frac{e^{-4\pi}}
-      {1+\frac{e^{-6\pi}} {1+\frac{e^{-8\pi}} {1+\cdots} } } }
-    </d-math>
-    <a class="marker" href="#section-1.1" id="section-1.1"><span>1.1</span></a>
-    <h3>Citations</h3>
-    <p>
-      <d-slider style="width: 200px;"></d-slider>
+    <p>It was on a warm and breezy Friday afternoon that Luca, having indulged in a heavy lunch, found himself gazing at a determined squirrel
+that was perched on his window sill. Clutching a stubborn nutshell with its tiny paws, the squirrel executed an array of maneuvers with
+intense focus. It began by turning the nut around, testing its angles and seams, while steadily biting and gnawing with determination.
+Luca couldn't help draw a parallel to the time he had spent poring over lines of code, navigating the maze of his dataset with little success.
+Memories came rushing of the hours spent babysitting his model, in pursuit of a reasonable loss curve. Despite his best efforts,
+the model that had performed so well on the reported data inexplicably and repeatedly failed on his dataset. The model doesn't generalize,
+_it just doesn't generalize_. At that very moment, a gentle breeze swept in and comforted him. Gradually, he sensed his thoughts slowing down,
+his focus dwindling and his eyelids growing heavier...when an unexpected touch on his shoulder jolted him.
+
+    "Come with me. Now. There's no time to explain"
+    "Wh..What?"
     </p>
-    <p>We can<d-cite bibtex-key="mercier2011humans"></d-cite> also cite <d-cite
-        key="gregor2015draw,mercier2011humans,openai2018charter"></d-cite> external publications. <d-cite
-        key="dong2014image,dumoulin2016guide,mordvintsev2015inceptionism"></d-cite>. We should also be testing footnotes
-      <d-footnote>This will become a hoverable footnote. This will become a hoverable footnote. This will become a
-        hoverable footnote. This will become a hoverable footnote. This will become a hoverable footnote. This will
-        become a hoverable footnote. This will become a hoverable footnote. This will become a hoverable footnote.
-      </d-footnote>. There are multiple footnotes, and they appear in the appendix<d-footnote>Given I have coded them
-        right. Also, here's math in a footnote: <d-math>c = \sum_0^i{x}</d-math>. Also, a citation. Box-ception<d-cite
-          key='gregor2015draw'></d-cite>!</d-footnote> as well.</p>
-    <a class="marker" href="#section-2" id="section-2"><span>2</span></a>
-    <h2>Displaying code snippets</h2>
-    <p>Some inline javascript:<d-code language="javascript">var x = 25;</d-code>. And here's a javascript code block.
+
+    <h3>Chapter 1: A failed effort</h3>
+    <p>And so it was, that Luca now found himself in a strange and peculiar land. He looked around in disbelief at the
+landscape that stretched into a boundless expanse. What he saw seemed both familiar and foreign to him. It slowly dawned upon him,
+as his eyes swept across the mountains of code in the backdrop.
+Gigantic crystalline structures, intricate with complex algorithms and databases, soared towards the sky.
+Interlinked nodes and circuits sprawled out like arteries, each a nexus of complex information, thoughts, and ideas. It was as if the whole world
+around him was drowning in the very essence of information and understanding. Three tall structures stood immediately before him pulsating
+with energy, emitting soft and harmonious hums that echoed through the city it was guarding.</p>
+
+    <p>Suddenly, Luca's thoughts turned to the unfinished work and the model that was now probably training, his cluttered desk, and his chair that
+squeaked when he leaned back, all of which seemed like a world far far away from the one he was now standing in.
+He was overcome with confusion regarding the nature of his journey and the identity of the woman who had accompanied him here.
+Just then she looked at him and started speaking:</p>
+
+    <p>Welcome to the DataRealm, where all data lives. The best of produce of this land is handed over to the Data Wizard. What you now see are the
+three spires of data quality. Before you step into the DataRealm, you need to pay your respects to these majestic structures, that have
+been built upon years of wisdom. She proceeded, 'The first one that you see, is the spire of Data Relevance. It stands as a testament to the data that have been abused, tortured
+and sacrificed in the name of a narrative. To all the times the data has not been checked, and has been force fit to tell a story.
+Data Relevance means, spending some time thinking about possible confounders, if the data at hand is appropriate for the task that you want to solve. Secondly, we have
+Data Integrity. This refers to the times the data was not checked for completeness, incomplete data was not tackled appropriately, and the data
+was not explored to identify outliers and the changes in the distribution not accounted for. Finally, the third monument stands in memory of all
+the times data security was neglected. Our data is beloved to us and can help us only as long as we protect them from bad actors. She now
+held his hand and stepped into the DataRealm</p>
+
+    <h3>Chapter 2: Shifting shores</h3>
+
+    <p>He now held her hand and stepped into the city. The minute he stepped he felt the ground moving and shifting. He looked bewildered at his
+companion. She calmly smiled and said 'This is a land that is constantly shifting, unlike where you come from. The data is in a
+constant state of flux. Even though your model of the world is constant, we are standing on ever shifting bases. For example, think of the
+scenario where we develop a model , but the data distribution itself changes. This is called covariate shift, the probability of the inputs
+Secondly, the world itself can change, this means the probability of the outputs changes. In the next stage, the world itself changes,
+this is called the model shift. And the model has to be updated enough to keep adapting to this change in world view.
+Use this example, to change and see how the model or the distributions change the output. There are two ways to measure the performance,
+one is by seeing how much the data has changed. And secondly, by seeing how much the performance has been affected as a result.'</p>
+
+    <p></p>
+    <p>he finally picked the data from the forest and stepped into a shrine. As he entered, he heard a sound and immediately remembered waking up.
+      He quickly looks outside the window, the squirrel was enjoying the magnificent treasures of its labour with a glint in its eye.
     </p>
-    <d-code block language="javascript">
-      var x = 25;
-      function(x){
-      return x * x;
-      }
-    </d-code>
-    <p>We also support python.</p>
-    <d-code block language="python">
-      # Python 3: Fibonacci series up to n
-      def fib(n):
-      a, b = 0, 1
-      while a < n: print(a, end=' ' ) a, b=b, a+b </d-code>
-        <p>And a table</p>
-        <table>
-          <thead>
-            <tr>
-              <th>First</th>
-              <th>Second</th>
-              <th>Third</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>23</td>
-              <td>654</td>
-              <td>23</td>
-            </tr>
-            <tr>
-              <td>14</td>
-              <td>54</td>
-              <td>34</td>
-            </tr>
-            <tr>
-              <td>234</td>
-              <td>54</td>
-              <td>23</td>
-            </tr>
-          </tbody>
-        </table>
-        <d-figure id="last-figure"></d-figure>
-        <script>
-          const figure = document.querySelector("d-figure#last-figure");
-          const initTag = document.createElement("span");
-          initTag.textContent = "initialized!"
-          figure.appendChild(initTag);
-          figure.addEventListener("ready", function () {
-            const initTag = figure.querySelector("span");
-            initTag.textContent = "ready"
-            console.log('ready')
-          });
-          figure.addEventListener("onscreen", function () {
-            const initTag = figure.querySelector("span");
-            initTag.textContent = "onscreen"
-            console.log('onscreen')
-          });
-          figure.addEventListener("offscreen", function () {
-            const initTag = figure.querySelector("span");
-            initTag.textContent = "offscreen!"
-            console.log('offscreen')
-          });
-        </script>
-        <p>That's it for the example article!</p>
+
+
+    <h3>Chapter 3: Wizardry</h3>
 
   </d-article>
 
