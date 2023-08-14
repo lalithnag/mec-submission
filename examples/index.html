@@ -80,39 +80,75 @@ Interlinked nodes and circuits sprawled out like arteries, each a nexus of compl
 around him was drowning in the very essence of information and understanding. Three tall structures stood immediately before him pulsating
 with energy, emitting soft and harmonious hums that echoed through the city it was guarding.</p>
 
-    <p>Suddenly, Luca's thoughts turned to the unfinished work and the model that was now probably training, his cluttered desk, and his chair that
-squeaked when he leaned back, all of which seemed like a world far far away from the one he was now standing in.
-He was overcome with confusion regarding the nature of his journey and the identity of the woman who had accompanied him here.
-Just then she looked at him and started speaking:</p>
+    <p>Suddenly, Luca's thoughts turned to the unfinished work, his model that was probably training, the cluttered desk and the creaky chair that he
+left behind, all of which seemed like a world far far away from the one he was now standing in.
+He was overcome with confusion regarding the nature of his journey and the identity of the woman who had accompanied
+him here. As he turned toward her, he had the feeling she could sense his bewilderment, she started speaking:
+Welcome to the land of DataRealm, where all data lives. The best of produce of this land is handed over to the Data
+Wizard. What you now see are the three spires of data quality. Before you step into the DataRealm, you need to pay your respects
+to these majestic structures, that have been built upon years of wisdom. She proceeded, </p>
 
-    <p>Welcome to the DataRealm, where all data lives. The best of produce of this land is handed over to the Data Wizard. What you now see are the
-three spires of data quality. Before you step into the DataRealm, you need to pay your respects to these majestic structures, that have
-been built upon years of wisdom. She proceeded, 'The first one that you see, is the spire of Data Relevance. It stands as a testament to the data that have been abused, tortured
-and sacrificed in the name of a narrative. To all the times the data has not been checked, and has been force fit to tell a story.
-Data Relevance means, spending some time thinking about possible confounders, if the data at hand is appropriate for the task that you want to solve. Secondly, we have
-Data Integrity. This refers to the times the data was not checked for completeness, incomplete data was not tackled appropriately, and the data
-was not explored to identify outliers and the changes in the distribution not accounted for. Finally, the third monument stands in memory of all
-the times data security was neglected. Our data is beloved to us and can help us only as long as we protect them from bad actors. She now
-held his hand and stepped into the DataRealm</p>
+    <p>These monuments stand in memory of all the data that has been abused, tortured, and sacrificed to fit a narrative.
+The first monument stands for _Data Relevance_. It reminds the people stepping into this land, to always first check if they are using
+data that is relevant to the task they want to solve at hand. This means, thinking about potential causal factors,
+or potential confounders that can affect what kind of data is collected for the task. There is this familiar trope that Switzerland
+produces the most amount of chocolate, as well as Nobel Laureates, that does not mean you begin collecting data on chocolates in order
+to analyse the data on the Nobel laureates. </p>
+
+    <p>The second structure that you see here stands for _Data integrity_. It reminds people to always have a look at the data and analyse it
+before beginning to use it for a task. This sounds obvious, doesn't it? But a lot of people are guilty of not performing exploratory data
+analysis. This means, looking at the data distribution, visualising histograms and pair plots, to first identify any overt outliers. Second,
+checking if the data is representative of the diversity that you expect to see in the test dataset. And finally, trying to analyse the
+features and their importance using techniques such as PCA, and t-SNE. Most importantly, a lot of them are guilty of using their own splits
+for their experiments. For example, one person performing methodological development on a certain train test split, and another person shows
+better performance but on another split of the data. This makes the methods not comparable and a lack of information prevents it from
+being reproducible. </p>
+
+    <p>Finally, the last structure stands in the name of data security. The data that is valuable to us can serve us only as long as we can protect
+it, and not let it fall under the hands of bad actors. This means, ensuring anonymization, checking the data pipeline for potential
+vulnerabilities. You need to check under which scope you are using the data, and if necessary apply techniques such as differential privacy
+to shield sensitive data from parts of your pipeline. As Luca was taking in this information, she held his hand and moved into through the spires.</p>
 
     <h3>Chapter 2: Shifting shores</h3>
 
-    <p>He now held her hand and stepped into the city. The minute he stepped he felt the ground moving and shifting. He looked bewildered at his
-companion. She calmly smiled and said 'This is a land that is constantly shifting, unlike where you come from. The data is in a
-constant state of flux. Even though your model of the world is constant, we are standing on ever shifting bases. For example, think of the
-scenario where we develop a model , but the data distribution itself changes. This is called covariate shift, the probability of the inputs
-Secondly, the world itself can change, this means the probability of the outputs changes. In the next stage, the world itself changes,
-this is called the model shift. And the model has to be updated enough to keep adapting to this change in world view.
-Use this example, to change and see how the model or the distributions change the output. There are two ways to measure the performance,
-one is by seeing how much the data has changed. And secondly, by seeing how much the performance has been affected as a result.'</p>
+    <p>As soon as Luca lay foot inside the realm, he could sense the ground beneath him shifting and moving. He was not sure if it was him that
+was moving or the world around him that kept changing what he could see. Ae he looked in astonishment toward her, she proceeded to explain:
+The land of data is ever shifting. In the land of data, unlike where you come from, the very nature of the visions you see and exist in, can change
+quite quickly. Even though your model and understanding of the world is the same. </p>
 
-    <p></p>
-    <p>he finally picked the data from the forest and stepped into a shrine. As he entered, he heard a sound and immediately remembered waking up.
-      He quickly looks outside the window, the squirrel was enjoying the magnificent treasures of its labour with a glint in its eye.
-    </p>
+    <p>We call this covariate shift. Let me give you an example. Assume in this city, 40% of the population is within the ages of 18 and 45,
+and 30% are above this range. Covariate shift means that as these people grow older, the model that you have trained on this data
+also fails to perform in the same way, as the distribution changes. There are two ways of measuring this change in distribution. Firstly,
+you can compare it to the original distribution of data, to see how different they are. Secondly, you can compare how this affects the performance
+of your model. So even if I have trained a good model on the dataset I have, there is a chance that the model may degrade in performance over
+time simply because the nature of data has changed? Yes! The model needs to be constantly updated to account for shift in data. How do I know
+if the data has changed? Through a change in performance, but it is better to assume there is a shift in data and to test for it.</p>
+
+    <p>But, keep in mind that it is not just about the data, the function describes the data itself can change. We call this _concept shift_. Here,
+the underlying assumptions about the function that fits the data has to be updated by updating the model. For example, you can have a
+segmentation algorithm, but there may be a new confounding factor uncovered like the ECG. In this case, the model needs to be updated.</p>
 
 
-    <h3>Chapter 3: Wizardry</h3>
+    <h3>Chapter 3: Splitting and Wizardry</h3>
+
+    <p>Luca was taking in all this new information, wondering if he actually did these things in his model pipeline. They now reached a forest where
+the purported data wizard resided. You need to pick the right data, that will lead you to the path home. There are multiple follies made
+previously by those who have trodden this path. If you can avoid these, you will be able to meet the Data Wizard who will send you home. She then
+proceeded to explain, 'Firstly, be aware of data leakage. You generally have the choice to split the data on multiple levels. For example,
+this can be a patient-level or the sample level, or a surgery-level. You need to think what kind of split makes the most sense. For example,
+if there are multiple surgical videos, it makes sense to split the frames in such a way that the surgeries do not mix. This can be ensured by
+using for example the sklearn function to check for data leakage.'</p>
+
+    <p>The second common mistake, is failing to ensure subgroups are adequately represented in your data splits. Always ensure you sample the data
+in a stratified manner. This helps pick the data in such a way that there is enough representation of the subgroups
+in each group. This is called stratified sampling. Additionally, if there are further hierarchies in your data,
+your data split needs to reflect these hierarchies while sampling. Finally, it is quite common that you come across data classes that are very
+imbalanced. This is especially true if you are trying to detect rare cases, such as rare diseases. In these cases you can turn to data augmentation
+to offset this imbalance, that is by adding more data. Alternatively you can sample in a balanced manner and leave out some data.</p>
+
+    <p>As Luca was ready to walk the path of the enchanted forest, he saw a really bright light that blinded him and heard a loud thud.
+When he opened his eyes, he saw his desk and found himself fallen from his chair in his office. He quickly looks outside the window,
+the squirrel was enjoying the magnificent treasures of its labour with a glint in its eye. </p>
 
   </d-article>
 
