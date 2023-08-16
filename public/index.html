@@ -1,0 +1,177 @@
+
+<!--
+  Copyright 2018 The Distill Template Authors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!doctype html>
+
+<head>
+  <script src="lib/template.v2.js"></script>
+  <script src="lib/d3.v7.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf8">
+</head>
+
+<body>
+  <!-- <distill-header></distill-header> -->
+  <d-front-matter>
+    <script id='distill-front-matter' type="text/json">{
+    "title": "A journey into DataRealm",
+    "description": "Although \" extremely useful for visualizing high-dimensional data, t-SNE plots can sometimes be mysterious or misleading.",
+    "published": "Aug 9, 2023",
+    "authors": [
+      {
+        "author":"Lalith Sharan",
+        "authorURL":"",
+        "affiliations": [{"name": "AICM, Heidelberg", "url": "https://www.klinikum.uni-heidelberg.de/chirurgische-klinik-zentrum/herzchirurgie/forschung/ag-artificial-intelligence-in-cardiovascular-medicine"}]
+      },
+      {
+        "author":"Georgii Kostiuchik",
+        "authorURL":"https://shancarter.com/",
+        "affiliations": [{"name": "AICM, Heidelberg", "url": "https://www.klinikum.uni-heidelberg.de/chirurgische-klinik-zentrum/herzchirurgie/forschung/ag-artificial-intelligence-in-cardiovascular-medicine"}]
+       },
+      {
+        "author":"Sandy Engelhardt",
+        "authorURL":"https://shancarter.com/",
+        "affiliations": [{"name": "AICM, Heidelberg", "url": "https://www.klinikum.uni-heidelberg.de/chirurgische-klinik-zentrum/herzchirurgie/forschung/ag-artificial-intelligence-in-cardiovascular-medicine"}]
+         }
+    ],
+    "katex": {
+      "delimiters": [
+        {"left": "$$", "right": "$$", "display": false}
+      ]
+    }
+  }</script>
+  </d-front-matter>
+  <d-title>
+    <p>This is a description of this article and a submission to the MICCAI Educational Challenge</p>
+  </d-title>
+  <d-byline></d-byline>
+  <d-article>
+    <a class="marker" href="#section-1" id="section-1"><span>1</span></a>
+    <p>It was on a warm and breezy Friday afternoon that Luca, having indulged in a heavy lunch, found himself gazing at a determined squirrel
+that was perched on his window sill. Clutching a stubborn nutshell with its tiny paws, the squirrel executed an array of maneuvers with
+intense focus. It began by turning the nut around, testing its angles and seams, while steadily biting and gnawing with determination.
+Luca couldn't help draw a parallel to the time he had spent poring over lines of code, navigating the maze of his dataset with little success.
+Memories came rushing of the hours spent babysitting his model, in pursuit of a reasonable loss curve. Despite his best efforts,
+the model that had performed so well on the reported data inexplicably and repeatedly failed on his dataset. The model doesn't generalize,
+_it just doesn't generalize_. At that very moment, a gentle breeze swept in and comforted him. Gradually, he sensed his thoughts slowing down,
+his focus dwindling and his eyelids growing heavier...when an unexpected touch on his shoulder jolted him.
+
+    "Come with me. Now. There's no time to explain"
+    "Wh..What?"
+    </p>
+
+    <h3>Chapter 1: A failed effort</h3>
+    <p>And so it was, that Luca now found himself in a strange and peculiar land. He looked around in disbelief at the
+landscape that stretched into a boundless expanse. What he saw seemed both familiar and foreign to him. It slowly dawned upon him,
+as his eyes swept across the mountains of code in the backdrop.
+Gigantic crystalline structures, intricate with complex algorithms and databases, soared towards the sky.
+Interlinked nodes and circuits sprawled out like arteries, each a nexus of complex information, thoughts, and ideas. It was as if the whole world
+around him was drowning in the very essence of information and understanding. Three tall structures stood immediately before him pulsating
+with energy, emitting soft and harmonious hums that echoed through the city it was guarding.</p>
+
+    <p>Suddenly, Luca's thoughts turned to the unfinished work, his model that was probably training, the cluttered desk and the creaky chair that he
+left behind, all of which seemed like a world far far away from the one he was now standing in.
+He was overcome with confusion regarding the nature of his journey and the identity of the woman who had accompanied
+him here. As he turned toward her, he had the feeling she could sense his bewilderment, she started speaking:
+Welcome to the land of DataRealm, where all data lives. The best of produce of this land is handed over to the Data
+Wizard. What you now see are the three spires of data quality. Before you step into the DataRealm, you need to pay your respects
+to these majestic structures, that have been built upon years of wisdom. She proceeded, </p>
+
+    <p>These monuments stand in memory of all the data that has been abused, tortured, and sacrificed to fit a narrative.
+The first monument stands for _Data Relevance_. It reminds the people stepping into this land, to always first check if they are using
+data that is relevant to the task they want to solve at hand. This means, thinking about potential causal factors,
+or potential confounders that can affect what kind of data is collected for the task. There is this familiar trope that Switzerland
+produces the most amount of chocolate, as well as Nobel Laureates, that does not mean you begin collecting data on chocolates in order
+to analyse the data on the Nobel laureates. </p>
+
+    <p>The second structure that you see here stands for _Data integrity_. It reminds people to always have a look at the data and analyse it
+before beginning to use it for a task. This sounds obvious, doesn't it? But a lot of people are guilty of not performing exploratory data
+analysis. This means, looking at the data distribution, visualising histograms and pair plots, to first identify any overt outliers. Second,
+checking if the data is representative of the diversity that you expect to see in the test dataset. And finally, trying to analyse the
+features and their importance using techniques such as PCA, and t-SNE. Most importantly, a lot of them are guilty of using their own splits
+for their experiments. For example, one person performing methodological development on a certain train test split, and another person shows
+better performance but on another split of the data. This makes the methods not comparable and a lack of information prevents it from
+being reproducible. </p>
+
+    <p>Finally, the last structure stands in the name of data security. The data that is valuable to us can serve us only as long as we can protect
+it, and not let it fall under the hands of bad actors. This means, ensuring anonymization, checking the data pipeline for potential
+vulnerabilities. You need to check under which scope you are using the data, and if necessary apply techniques such as differential privacy
+to shield sensitive data from parts of your pipeline. As Luca was taking in this information, she held his hand and moved into through the spires.</p>
+
+    <h3>Chapter 2: Shifting shores</h3>
+
+    <p>As soon as Luca lay foot inside the realm, he could sense the ground beneath him shifting and moving. He was not sure if it was him that
+was moving or the world around him that kept changing what he could see. Ae he looked in astonishment toward her, she proceeded to explain:
+The land of data is ever shifting. In the land of data, unlike where you come from, the very nature of the visions you see and exist in, can change
+quite quickly. Even though your model and understanding of the world is the same. </p>
+
+    <p>We call this covariate shift. Let me give you an example. Assume in this city, 40% of the population is within the ages of 18 and 45,
+and 30% are above this range. Covariate shift means that as these people grow older, the model that you have trained on this data
+also fails to perform in the same way, as the distribution changes. There are two ways of measuring this change in distribution. Firstly,
+you can compare it to the original distribution of data, to see how different they are. Secondly, you can compare how this affects the performance
+of your model. So even if I have trained a good model on the dataset I have, there is a chance that the model may degrade in performance over
+time simply because the nature of data has changed? Yes! The model needs to be constantly updated to account for shift in data. How do I know
+if the data has changed? Through a change in performance, but it is better to assume there is a shift in data and to test for it.</p>
+
+    <p>But, keep in mind that it is not just about the data, the function describes the data itself can change. We call this _concept shift_. Here,
+the underlying assumptions about the function that fits the data has to be updated by updating the model. For example, you can have a
+segmentation algorithm, but there may be a new confounding factor uncovered like the ECG. In this case, the model needs to be updated.</p>
+
+
+    <h3>Chapter 3: Splitting and Wizardry</h3>
+
+    <p>Luca was taking in all this new information, wondering if he actually did these things in his model pipeline. They now reached a forest where
+the purported data wizard resided. You need to pick the right data, that will lead you to the path home. There are multiple follies made
+previously by those who have trodden this path. If you can avoid these, you will be able to meet the Data Wizard who will send you home. She then
+proceeded to explain, 'Firstly, be aware of data leakage. You generally have the choice to split the data on multiple levels. For example,
+this can be a patient-level or the sample level, or a surgery-level. You need to think what kind of split makes the most sense. For example,
+if there are multiple surgical videos, it makes sense to split the frames in such a way that the surgeries do not mix. This can be ensured by
+using for example the sklearn function to check for data leakage.'</p>
+
+    <p>The second common mistake, is failing to ensure subgroups are adequately represented in your data splits. Always ensure you sample the data
+in a stratified manner. This helps pick the data in such a way that there is enough representation of the subgroups
+in each group. This is called stratified sampling. Additionally, if there are further hierarchies in your data,
+your data split needs to reflect these hierarchies while sampling. Finally, it is quite common that you come across data classes that are very
+imbalanced. This is especially true if you are trying to detect rare cases, such as rare diseases. In these cases you can turn to data augmentation
+to offset this imbalance, that is by adding more data. Alternatively you can sample in a balanced manner and leave out some data.</p>
+    
+  <svg id="stratification" width="100%"></svg>
+  <div id="controls">
+    <button>Sampling</button>
+    <button>Shuffled sampling</button>
+    <button>Stratified sampling</button>
+  </div>
+
+    <p>As Luca was ready to walk the path of the enchanted forest, he saw a really bright light that blinded him and heard a loud thud.
+When he opened his eyes, he saw his desk and found himself fallen from his chair in his office. He quickly looks outside the window,
+the squirrel was enjoying the magnificent treasures of its labour with a glint in its eye. </p>
+
+  </d-article>
+
+  <d-appendix>
+
+    <h3>Contributions</h3>
+    <p>Some text describing who did what.</p>
+    <h3>Reviewers</h3>
+    <p>Some text with links describing who reviewed the article.</p>
+
+    <d-bibliography src="bibliography.bib"></d-bibliography>
+  </d-appendix>
+
+  <distill-footer></distill-footer>
+  <script src="stratification.js" type="module"></script>
+
+</body>
