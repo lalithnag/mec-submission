@@ -188,7 +188,7 @@ you have a small sample of data. While the relationship between the input variab
     caused as a result of choices made while acquiring your data, also called _sampling bias_. </p>
 
 <p> For example, assume you have the task of predicting
-tumor volume from features learnt from CT scans <d-cite key="dockes_preventing_2021"></d-cite>. The size of the tumor is not only influenced by the image features but also a contrast agent.
+tumor volume from features learnt from CT scans <d-cite key="dockes_preventing_2021"></d-cite>. The size of the tumor (X) is not only influenced by the image features (Y) but also a contrast agent (M).
 Here, selecting images of high resolution, or selecting images that have a particular strength of contrast agent, both introduce bias in selecting
 the data. The tumor volume learnt as a result is from a subset of the data that was had certain biases in the sampling, and now when the model
 encounters data from the wild, it has trouble to adapt to this shift in the distribution. One way to tackles this problem is by _importance weighting_.
