@@ -79,7 +79,6 @@ let calculateSampleYPosition = function(s) {
     }
 }
 
-
 let drawSamples = function() {
     g.selectAll('.sample')
         .data(samples, k => k.sample)
@@ -91,9 +90,10 @@ let drawSamples = function() {
                 .attr('cx', calculateSampleXPosition)
                 .attr('cy', calculateSampleYPosition),
             update => update.transition()
-            .duration(2000)
-            .attr('cx', calculateSampleXPosition)
-            .attr('cy', calculateSampleYPosition)
+                .delay((_,i) => 70 * i)
+                .duration(2000)
+                .attr('cx', calculateSampleXPosition)
+                .attr('cy', calculateSampleYPosition)
         );
 }
 
