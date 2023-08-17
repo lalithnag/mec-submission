@@ -60,82 +60,73 @@
   <d-byline></d-byline>
   <d-article>
     <a class="marker" href="#section-1" id="section-1"><span>1</span></a>
-    <p>It was on a warm and breezy Friday afternoon that Luca, having indulged in a heavy lunch, found himself gazing at a determined squirrel
-that was perched on his window sill. The squirrel, clutching a stubborn nutshell with its tiny paws, executed an array of maneuvers with
-intense focus. It began by turning the nut around, testing its angles and seams, while steadily biting and gnawing with determination.
-Luca couldn't help draw a parallel to the time he had spent poring over lines of code, navigating the maze of his dataset with little success.
-Memories came rushing of the hours spent babysitting his model, in pursuit of a reasonable loss curve. Despite his best efforts,
-the model that had performed so well on the reported data inexplicably and repeatedly failed on his dataset. The model doesn't generalize,
-_it just doesn't generalize_. At that very moment, a gentle breeze swept in and comforted him. Gradually, he sensed his thoughts slowing down,
-his focus dwindling and his eyelids growing heavier...when an unexpected touch on his shoulder jolted him.
+      <p> It was on a warm and breezy Friday afternoon that Luca, having indulged in a heavy lunch, found himself gazing at a determined squirrel
+        that was perched on his window sill. The squirrel, clutching a stubborn nutshell with its tiny paws, executed an array of maneuvers with
+        intense focus. It began by turning the nut around, testing its angles and seams, while steadily biting and gnawing with determination.
+        Luca couldn't help draw a parallel to the time he had spent poring over lines of code, navigating the maze of his dataset with little success.
+        Memories came rushing of the hours spent babysitting his model, in pursuit of a reasonable loss curve. Despite his best efforts,
+        the model that had performed so well on the reported data inexplicably and repeatedly failed on his dataset. The model doesn't generalize,
+          <i> it just doesn't generalize </i>. At that very moment, a gentle breeze swept in and comforted him. Gradually, he sensed his thoughts slowing down,
+        his focus dwindling and his eyelids growing heavier...when an unexpected touch on his shoulder jolted him. </p>
 
-"Come with me. Now. There's no time to explain"
-"Wh..What?"
-    </p>
+      <q> Come with me. Now. There's no time to explain </q>
+      <q> Wh..What? </q>
 
-    <h3>Chapter 1: A failed effort</h3>
-        <p>And so it was, that Luca now found himself in a strange and peculiar land. What he saw seemed both familiar and foreign to him, as he stared in disbelief
-    at the boundless expanse that lay in front of him. Suddenly, Luca's thoughts turned to the unfinished work, his model that was probably training, the cluttered desk and the creaky chair that he
-    left behind, all of which seemed like a world far far away from the one he was now standing in.
-    He was overcome with confusion regarding the nature of his journey and the identity of the woman who had accompanied
-    him here. As he glanced to his left in her direction, he had a feeling that she could perceive his confusion. As if in response, she proceeded to talk,
-    'Greetings to the land of DataRealm, where all data lives. Here, information flows like rivers and mountains of code rise into the sky. This is a realm of creation and discovery, where the human spirit and the digital domain converge to form a connected whole.'</p>
-
-      <!-- Chapter 1 -->
+    <h3>Chapter 1: Exploration</h3>
       <p> And so it was, that Luca now found himself in a strange and peculiar land. What he saw seemed both familiar and foreign to him, as he stared in disbelief
     at the boundless expanse that lay in front of him. Suddenly, Luca's thoughts turned to the unfinished work, his model that was probably training, the cluttered desk and the creaky chair that he
     left behind, all of which seemed like a world far far away from the one he was now standing in.
     He was overcome with confusion regarding the nature of his journey and the identity of the woman who had accompanied
     him here. As he glanced to his left in her direction, he had a feeling that she could perceive his confusion. As if in response, she proceeded to talk,
-    'Greetings to the land of DataRealm, where all data lives. Here, information flows like rivers and mountains of code rise into the sky. This is a realm of creation and discovery, where the human spirit and the digital domain converge to form a connected whole.' </p>
+    'Greetings to the land of DataRealm, where all data lives. Here, information flows like rivers and mountains of code rise into the sky.
+          This is a realm of creation and discovery, where the human spirit and the digital domain converge to form a connected whole.' </p>
 
       <p> As his eyes swept across the landscape, it slowly dawned upon him, as he faintly noticed gigantic crystalline structures in a distance that stood tall,
 intricate with complex algorithms and databases. Interlinked nodes and circuits sprawled out like arteries, each a nexus of complex information, thoughts, and ideas.
-It was as if the whole world around him was drowning in the very essence of information and understanding. Sensing his bewilderment, she continued, 'Deep within the heart of this land lies the _Archive of Wisdom_,
+          It was as if the whole world around him was drowning in the very essence of information and understanding. Sensing his bewilderment, she continued, 'Deep within the heart of this land lies the <i>Archive of Wisdom</i>,
 a treasure of all what humanity has thus far learnt from data. I see you have been in a lot of turmoil. Worry not, I am now going to take you there.'
 Luca was just processing all that he had heard, wondering if this was all an elaborate joke. 'However my friend, we first need to pass through the three majestic spires that stand in front of us.'
 </p>
 
 <p> She held his hand and stepped toward the three tall structures that stood immediately before him, pulsating with energy, emitting soft and harmonious hums that echoed through the city behind it.
 These towers stand in memoriam of all the data that have been misused, neglected, tortured, and sacrificed to fit a narrative. Luca, remember what they stand for, that you shall not repeat
-the same mistakes. The first spire to your right, stands in the name of _Data Integrity_. It teaches us to always explore and understand your data before plunging into a task.
+the same mistakes. The first spire to your right, stands in the name of <i>Data Integrity</i>. It teaches us to always explore and understand your data before plunging into a task.
     Data has many insights that can be unearthed only through earnest poking and prying, and then lingering to listen to what it has to say. </p>
 
 <p> 'How do I do this?' asked Luca feverishly. She smiled and proceeded, 'Your first step is to perform an exploratory data analysis. Here, you need to explore the distribution of your dataset, and
 pause to think if it agrees with the underlying assumptions made about the data that you have observed. In more concrete terms, first understand the data distribution by plotting histograms, and looking for
-any obvious outliers. Additionally, you can use pair plots to visualise the pair wise occurrences of features or the correlations between features. Further, dimensionality reduction methods like principal component analysis,
-    and t-SNE visualisations help determine the salient features of your data. </p>
+any obvious outliers. Additionally, you can use pair plots, for example, <code>seaborn.pairplot</code> <d-cite key="mercier2011humans"></d-cite> to visualise the pair wise occurrences of features or the correlations between features. Further, dimensionality reduction methods like principal component analysis,
+    and t-SNE visualisations help determine the salient features of your data <d-cite key="mercier2011humans"></d-cite></p>
 
 <!-- sample image of pair plot and feature distribution plot -->
 
-<p> 'Luca, answer me this', she said, softly looking upward to the middle spire. _Crystal clear when uttered aloud, yet the crowd's notice I often shroud. What am I?_. After seeing Luca's slightly embarrassed and pondering look,
-she continued '_Data Relevance_'. A lot of people take it for granted that defining a task on a dataset automatically implies the data is relevant to the task, but this may not be true in all cases. Let me explain. There is
-a well-known story in our realm about the significant linear correlation discovered between the per-capita consumption of chocolate in a country and the Nobel laureates that it produces (r=0.791, P<0.0001).
+      <p> 'Luca, answer me this', she said, softly looking upward to the middle spire. <i> Crystal clear when uttered aloud, yet the crowd's notice I often shroud. What am I? </i>. After seeing Luca's slightly embarrassed and pondering look,
+she continued <i>Data Relevance</i>. A lot of people take it for granted that defining a task on a dataset automatically implies the data is relevant to the task, but this may not be true in all cases. Let me explain. There is
+a well-known story in our realm about the significant linear correlation discovered between the per-capita consumption of chocolate in a country and the Nobel laureates that it produces (r=0.791, P<0.0001) <d-cite key="doi:10.1056/NEJMon1211064"></d-cite>.
 Although this correlation is undeniable, you would do well to stop and think about possible confounders that may introduce spurious correlations into your model of the world.
 You might need to look further and investigate the possible causal factors that may underlie both these observed effects. Let me give you another example Luca. During an investigation of a rule-based model to detect
 risk of pneumonia, they found that asthma patients showed a lower risk of pneumonia. This is counter-intuitive but deeper investigation showed that the asthmatic patients who were directly admitted to the intensive care
     unit, received better care that resulted in a now decreased risk of pneumonia compared to the rest of the population. </p>
 
-
 <!-- image of correlation between chocolates and Nobel Laureates -->
 
 <p> And finally, remember, splitting your data can also end up introducing spurious correlations in your dataset. Remember the time when this work, which presented state-of-the-art performance that was better
-than human radiologists in detecting pneumonia from chest X-rays. This work received flak in lieu of the data splitting that was used. Now I am not questioning the validity of this work, but rather pointing your attention
+than human radiologists in detecting pneumonia from chest X-rays <d-cite key="mercier2011humans"></d-cite>. This work received flak in lieu of the data splitting that was used. Now I am not questioning the validity of this work, but rather pointing your attention
 to the importance of explicitly outlining your data splits in the pipeline to the extent possible. It is not trivial, as we will
-see later in our journey. I now urge you to pay your respects to the structure standing on the left in the name of _Data Security_. The data that is valuable to us can serve us only as long as we can protect
+see later in our journey. I now urge you to pay your respects to the structure standing on the left in the name of <i>Data Security</i>. The data that is valuable to us can serve us only as long as we can protect
 it, and not let it fall under the hands of bad actors. This means, ensuring anonymization and checking the data pipeline for potential
 vulnerabilities. One must indeed to check the scope to which the data is exposed, and if necessary shield sensitive data from parts of your pipeline. Some may even turn to differential privacy or federated learning in
     this regard. </p>
 
-<h3>Chapter 2: Shifting shores</h3>
-<p> The two travellers then began their journey to Archive of wisdom at the heart of the realm. Luca's head was brimming
+<h3>Chapter 2: A balancing act</h3>
+      <p> The two travellers then began their journey to <i> Archive of wisdom </i> at the heart of the realm. Luca's head was brimming
 with all the information he had just received, while his companion, who now looked focused on her immediate surroundings,
 turned to him and started in an anxious tone, 'Dear Luca, a little while ago I told you about data splitting and how it could introduce
 spurious relations learnt from your dataset. This is a bigger issue, and we need to speak about it if you intend to proceed further into the realm.
 It is our utmost responsibility while splitting data into train, test, and validation sets, or while splitting into cross-validation folds, that
 you ensure there is no data leakage. Multitudes before you have failed to ensure this simple fact and have paid the price for it. There is no
 place for these people in the heart of data realm. Splitting your data randomly may sometimes lead to same frames from a surgery, or from a patient
-to fall under both the training and validation set or across different folds. If not ensured during the splitting process, this mode of failure
+to fall under both the training and validation set or across different folds <d-cite key="mercier2011humans"></d-cite>. If not ensured during the splitting process, this mode of failure
 is very difficult to detect at later stages of the pipeline, and you may just be convinced that your model performs better. It is a good idea to use sklearn functions
     to ensure there is no data leakage while splitting your data. </p>
 
@@ -149,32 +140,62 @@ is very difficult to detect at later stages of the pipeline, and you may just be
 <p> She continued, with an eye toward her next destination that lay straight ahead of where they were walking. Data leakage is much more
 obvious but splitting can affect the performance of the data in more subtle ways. For example, if you have different subgroups
 in your dataset, you need to ensure that each split or the fold of the data adequately represents the distribution of your whole dataset.
-This is called stratified sampling, and can for example be done using the ```sklearn.model_selection.StratifiedShuffleSplit```.
+This is called stratified sampling, and can for example be done using the <code> sklearn.model_selection.StratifiedShuffleSplit </code>.
 Otherwise, this will skew your results. Keep in mind that the distribution or the shape of the different classes in your folds must essentially reflect
     that of your dataset. Similarly, if your data has hierarchies, they must also be reflected in your different splits. </p>
 
+<p> Luca, you have been brave in your journey into the realm of data. You must have also noticed something by now. In here, like in life, some data
+is abundant while some are rare and hard to come by. Take for example the case of rare diseases, say a tumor using
+MRI images. The number of images that contain a tumor may be very limited, which may lead your model to be biased towards the
+majority class, in this case no tumour. This would eventually lead to a misleading evaluation, especially a lower sensitivity,
+and missed detections as a result. There are a few ways to approach this. One technique is to oversample the minority class by
+generating synthetic data samples. Data augmentation is one method to achieve this. Techniques like SMOTE (Synthetic minority over-sampling
+technique) <d-cite key="mercier2011humans"></d-cite> creates new synthetic instances by interpolating between existing minority class instances. Alternatively,
+under-sampling the majority class helps balance the classes and reduce risk of overfitting. The downside it that you potentially lose information
+that you could learn from. </p>
 
+<h3>Chapter 3: Shifting realities</h3>
+<p> Luca was now getting weary from his long and winding journey, yet he remained resolute to see to its conclusion.
+His initial confusion had given way to gratitude and deep appreciation for the wealth of knowledge he was acquiring.
+Often, life introduces unexpected benefactors who end up invaluably changing your life for the better.
+Such was the nature of what his companion had done for him. They now ventured forth, into what appeared to be an enclave, that had an enchanted aura
+    that was buzzing with life.</p>
 
-    <h3>Chapter 3: Splitting and Wizardry</h3>
+<p> As soon as Luca lay foot inside the realm, the ground beneath him shifting and moved, and he could notice the world around him changing, almost
+as if someone hit a refresh button. Gazing in astonishment at his companion, he was once again met with her explanation, 'In the DataRealm,
+data is in a constant state of flux. Just like how you can't step into the same river twice, data too never stand still. Many travellers before
+    you have experienced this phenomenon, although many have chosen to disregard it and have ultimately faced the consequences. Allow me to explain.' </p>
 
-    <p>Luca was taking in all this new information, wondering if he actually did these things in his model pipeline. They now reached a forest where
-the purported data wizard resided. You need to pick the right data, that will lead you to the path home. There are multiple follies made
-previously by those who have trodden this path. If you can avoid these, you will be able to meet the Data Wizard who will send you home. She then
-proceeded to explain, 'Firstly, be aware of data leakage. You generally have the choice to split the data on multiple levels. For example,
-this can be a patient-level or the sample level, or a surgery-level. You need to think what kind of split makes the most sense. For example,
-if there are multiple surgical videos, it makes sense to split the frames in such a way that the surgeries do not mix. This can be ensured by
-using for example the sklearn function to check for data leakage.'</p>
+<p> Consider the problem of training a classifier to predict tumor from a dataset consisting of CT images. You have trained your model on a wide dataset,
+achieved reasonably good accuracy, probably even state of the art. You now want to deploy it as a proof of concept in multiple centers to test
+the performance of the model. But you notice that the model does not perform comparably, in the wild. This is often due to data shifts that occur,
+as a result of the train and test data coming from different distributions. But you need to understand that this is not necessarily because
+you have a small sample of data. While the relationship between the input variables and the targets remain the same, data shifts may be
+    caused as a result of choices made while acquiring your data, also called _sampling bias_. </p>
 
-    <p>The second common mistake, is failing to ensure subgroups are adequately represented in your data splits. Always ensure you sample the data
-in a stratified manner. This helps pick the data in such a way that there is enough representation of the subgroups
-in each group. This is called stratified sampling. Additionally, if there are further hierarchies in your data,
-your data split needs to reflect these hierarchies while sampling. Finally, it is quite common that you come across data classes that are very
-imbalanced. This is especially true if you are trying to detect rare cases, such as rare diseases. In these cases you can turn to data augmentation
-to offset this imbalance, that is by adding more data. Alternatively you can sample in a balanced manner and leave out some data.</p>
+<p> For example, assume you have the task of predicting
+tumor volume from features learnt from CT scans <d-cite key="mercier2011humans"></d-cite>. The size of the tumor is not only influenced by the image features but also a contrast agent.
+Here, selecting images of high resolution, or selecting images that have a particular strength of contrast agent, both introduce bias in selecting
+the data. The tumor volume learnt as a result is from a subset of the data that was had certain biases in the sampling, and now when the model
+encounters data from the wild, it has trouble to adapt to this shift in the distribution. One way to tackles this problem is by _importance weighting_.
+This means weighting your data as per the importance expected to be observed in the target distribution. For instance, the attributes that are rarely seen
+observed in the source dataset but are more likely to be seen in the target dataset are assigned more importance. Another approach is to use
+uncertainty estimation to make the model robust to shifts that are expected to be observed.
+Keep in mind that it is not just data, but new relationships can evolve over time from your data. This is called _concept shift_.
+Take for example, a model that predicts patient mortality based on pneumonia <d-cite key="mercier2011humans"></d-cite>. The arrival of Covid-19 introduced a novel class as compared to bacterial
+pneumonia. Often a combination of both shifts may be observed in the real world. In the same example for instance, a model trained on
+    pre-covid vaccination data may overestimate risk for a vaccinated population. </p>
 
-    <p>As Luca was ready to walk the path of the enchanted forest, he saw a really bright light that blinded him and heard a loud thud.
-When he opened his eyes, he saw his desk and found himself fallen from his chair in his office. He quickly looks outside the window,
-the squirrel was enjoying the magnificent treasures of its labour with a glint in its eye. </p>
+<p> After his long and winding journey, Luca now stood in the heart of the realm. He was at the precipice of the hallowed archive of wisdom,
+waiting with a sense of anticipation in every breath.
+Yet, when he glanced behind, his faithful companion, who had been his guide, had vanished, leaving him with a trail of memories and the
+knowledge shared. It was as if her purpose had been fulfilled, and her absence was now a testament to where Luca was in his journey.
+As his foot touched the ground, a sudden disorientation swept over him, as he stumbled backward with a loud thud.
+The world around him flickered and dimmed. When his eyes blinked open, he found himself sprawled on the floor of his office,
+seemingly fallen from his office chair. The shifting visions of the DataRealm had vanished, giving way to the familiar sights of his
+cluttered desk. His model had now finished training.
+With a thoughtful grin, Luca outside to find his old friend, the squirrel, still perched on the window sill.
+    Having cracked open the shell, he was now savouring the treasures of his labour with a glint in his eye. </p>
 
   </d-article>
 
