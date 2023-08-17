@@ -17,22 +17,13 @@ const g = d3.select('#stratification')
     .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
-const classScale = d3.scaleBand()
-    .domain(classes)
-    .range([0, svgWidth - margin.left - margin.bottom])
-    .paddingInner(0.2);
+const dataScale = d3.scaleBand()
+    .domain(samples.map(s => s.sample))
+    .range([0, svgWidth - margin.left - margin.right]);
 
 const classColors = d3.scaleOrdinal()
     .domain(classes)
     .range(['#66c2a5','#fc8d62','#8da0cb','#e78ac3','#a6d854','#ffd92f','#e5c494','#b3b3b3']);
-
-let dataclasses = g.selectAll('.dataclass')
-    .data(classes)
-    .join(
-        enter => enter.append('g')
-            .attr('class', 'dataclass')
-            .attr('transform', d => `translate(${classScale(d)},0)`)
-    );
 
 const sets = ['train', 'test'];
 const colors = d3.scaleOrdinal()
@@ -49,18 +40,18 @@ const setClassScale = d3.scaleBand()
         .range([0, setScale.bandwidth()])
         .paddingOuter(0.3)
 
-dataclasses.each((p,j,nodes)=> {
-    d3.select(nodes[j])
-    .selectAll('.class-label')
-    .data([p])
-    .join(
-        enter => enter.append('text')
-            .attr('class', 'class-label')
-            .attr('font-style', 'italic')
-            .attr('font-size', '11pt')
-            .html(`Class ${p + 1}`)
-    );
-});
+// dataclasses.each((p,j,nodes)=> {
+//     d3.select(nodes[j])
+//     .selectAll('.class-label')
+//     .data([p])
+//     .join(
+//         enter => enter.append('text')
+//             .attr('class', 'class-label')
+//             .attr('font-style', 'italic')
+//             .attr('font-size', '11pt')
+//             .html(`Class ${p + 1}`)
+//     );
+// });
 
 
 let calculateSampleXPosition = function(s) {
@@ -79,6 +70,10 @@ let calculateSampleYPosition = function(s) {
     }
 }
 
+let clearSamples = function() {
+    g.selectAll('.sample').remove();
+}
+
 let drawSamples = function() {
     g.selectAll('.sample')
         .data(samples, k => k.sample)
@@ -87,8 +82,8 @@ let drawSamples = function() {
                 .attr('class', 'sample')
                 .attr('r', circleRadius)
                 .attr('fill', d => classColors(d.dataclass))
-                .attr('cx', calculateSampleXPosition)
-                .attr('cy', calculateSampleYPosition),
+                .attr('cx', d => dataScale(d.sample))
+                .attr('cy', 0),
             update => update.transition()
                 .delay((_,i) => 70 * i)
                 .duration(2000)
@@ -114,7 +109,10 @@ g.selectAll('.set')
             .attr('opacity', 0.5)
     )
 
-let samping = function() {
+const withoutShuffling = function() {
+    clearSamples();
+    drawSamples();
+
     let nrSamples = Math.floor(samples.length * split[0]);
     let classCounter = [[0,0,0,0], [0,0,0,0]]
 
@@ -123,12 +121,34 @@ let samping = function() {
 
     samples.forEach(e => e.sortIdx = e.set === 'train' ? classCounter[0][e.dataclass]++ : classCounter[1][e.dataclass]++)
 
-    console.log(samples)
+    drawSamples();
+}
+
+
+const shuffledSplit = function() {
+    clearSamples();
+    drawSamples();
+
+    shuffleSamples(samples);
+
+    let nrSamples = Math.floor(samples.length * split[0]);
+    let classCounter = [[0,0,0,0], [0,0,0,0]];
+
+
+    samples.slice(0, nrSamples).forEach(e => e.set = 'train');
+    samples.slice(nrSamples).forEach(e => e.set = 'test');
+
+    // sort again
+    samples.sort((a,b) => a.sample - b.sample);
+
+    samples.forEach(e => e.sortIdx = e.set === 'train' ? classCounter[0][e.dataclass]++ : classCounter[1][e.dataclass]++)
 
     drawSamples();
 }
 
-document.getElementById("btn1").addEventListener("click", samping);
+document.getElementById("btn1").addEventListener("click", withoutShuffling);
+document.getElementById("btn2").addEventListener("click", shuffledSplit);
+
 
 
 function generateSamples(nrSamples) {
@@ -138,4 +158,17 @@ function generateSamples(nrSamples) {
     return d3.range(d3.sum(nrSamples)).map((_,i) => {
         return {sample: i, dataclass: classIndex[i], sortIdx: classCounter[classIndex[i]]++, set: null}
     })
+}
+
+// inplace shuffling
+function shuffleSamples(array) {
+
+    let j, x, i;
+    for (i = array.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = array[i];
+        array[i] = array[j];
+        array[j] = x;
+    }
+    
 }
