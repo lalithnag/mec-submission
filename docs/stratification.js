@@ -73,7 +73,7 @@ let calculateSampleXPosition = function(s) {
 
 let calculateSampleYPosition = function(s) {
     if(s.set) {
-        return (svgHeight - margin.top - margin.bottom) - (Math.floor(s.sortIdx / grid.nrRows) * circleDistance);
+        return (svgHeight - margin.top - margin.bottom) - (s.sortIdx * circleDistance);
     } else {
         return Math.floor(s.sortIdx / grid.nrRows) * circleDistance
     }
@@ -122,6 +122,8 @@ let samping = function() {
     samples.slice(nrSamples).forEach(e => e.set = 'test');
 
     samples.forEach(e => e.sortIdx = e.set === 'train' ? classCounter[0][e.dataclass]++ : classCounter[1][e.dataclass]++)
+
+    console.log(samples)
 
     drawSamples();
 }
