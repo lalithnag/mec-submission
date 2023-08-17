@@ -160,7 +160,8 @@ Otherwise, this will skew your results. Keep in mind that the distribution or th
 is abundant while some are rare and hard to come by. Take for example the case of rare diseases, say a tumor using
 MRI images. The number of images that contain a tumor may be very limited, which may lead your model to be biased towards the
 majority class, in this case no tumour. This would eventually lead to a misleading evaluation, especially a lower sensitivity,
-and missed detections as a result. There are a few ways to approach this. One technique is to oversample the minority class by
+and missed detections as a result. There are a few ways to approach this <d-cite key="reinke_common_2023"></d-cite>. One technique is to oversample the
+    minority class by
 generating synthetic data samples. Data augmentation is one method to achieve this. Techniques like SMOTE (Synthetic minority over-sampling
 technique) <d-cite key="chawla_smote_2002"></d-cite> creates new synthetic instances by interpolating between existing minority class instances. Alternatively,
 under-sampling the majority class helps balance the classes and reduce risk of overfitting. The downside it that you potentially lose information
