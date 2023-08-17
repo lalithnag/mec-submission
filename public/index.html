@@ -27,9 +27,9 @@
   <!-- <distill-header></distill-header> -->
   <d-front-matter>
     <script id='distill-front-matter' type="text/json">{
-    "title": "A journey into DataRealm",
+    "title": "Echoes from the DataRealm",
     "description": "Although \" extremely useful for visualizing high-dimensional data, t-SNE plots can sometimes be mysterious or misleading.",
-    "published": "Aug 9, 2023",
+    "published": "Aug 17, 2023",
     "authors": [
       {
         "author":"Lalith Sharan",
@@ -55,7 +55,7 @@
   }</script>
   </d-front-matter>
   <d-title>
-    <p>This is a description of this article and a submission to the MICCAI Educational Challenge</p>
+    <p>A journey into the winding paths and enchanted forests of the data pipeline</p>
   </d-title>
   <d-byline></d-byline>
   <d-article>
@@ -95,8 +95,12 @@ the same mistakes. The first spire to your right, stands in the name of <i>Data 
 
 <p> 'How do I do this?' asked Luca feverishly. She smiled and proceeded, 'Your first step is to perform an exploratory data analysis. Here, you need to explore the distribution of your dataset, and
 pause to think if it agrees with the underlying assumptions made about the data that you have observed. In more concrete terms, first understand the data distribution by plotting histograms, and looking for
-any obvious outliers. Additionally, you can use pair plots, for example, <code>seaborn.pairplot</code> <d-cite key="mercier2011humans"></d-cite> to visualise the pair wise occurrences of features or the correlations between features. Further, dimensionality reduction methods like principal component analysis,
-    and t-SNE visualisations help determine the salient features of your data <d-cite key="mercier2011humans"></d-cite></p>
+any obvious outliers. Additionally, you can use pair plots, for example, <code>seaborn.pairplot</code> <d-cite
+            key="noauthor_seabornpairplot_nodate"></d-cite> to visualise the pair wise occurrences of features or the
+    correlations between
+    features. Further, dimensionality reduction methods like principal component analysis,
+    and t-SNE visualisations help determine the salient features of your data <d-cite
+            key="wattenberg_how_2016"></d-cite>.</p>
 
 <!-- sample image of pair plot and feature distribution plot -->
 
@@ -111,10 +115,14 @@ risk of pneumonia, they found that asthma patients showed a lower risk of pneumo
     <figure class="l-page">
       <img src="nejmon1211064_f1.jpeg">
       <figcaption style="text-align: center;">Correlation between Countries' Annual Per Capita Chocolate Consumption and the Number of Nobel
-        Laureates per 10 Million Population.</figcaption>
+        Laureates per 10 Million Population <d-cite key="chocolate"></d-cite>.</figcaption>
     </figure>
 <p> And finally, remember, splitting your data can also end up introducing spurious correlations in your dataset. Remember the time when this work, which presented state-of-the-art performance that was better
-than human radiologists in detecting pneumonia from chest X-rays <d-cite key="mercier2011humans"></d-cite>. This work received flak in lieu of the data splitting that was used. Now I am not questioning the validity of this work, but rather pointing your attention
+than human radiologists in detecting pneumonia from chest X-rays <d-cite key="rajpurkar_chexnet_2017"></d-cite>. This
+    work invited attention and critique regarding the data splits used <d-cite
+            key="botz_few_2017,laurenoakdenrayner_chexnet_2018,"></d-cite>. Now I am not questioning the validity
+    of this
+    work, but rather pointing your attention
 to the importance of explicitly outlining your data splits in the pipeline to the extent possible. It is not trivial, as we will
 see later in our journey. I now urge you to pay your respects to the structure standing on the left in the name of <i>Data Security</i>. The data that is valuable to us can serve us only as long as we can protect
 it, and not let it fall under the hands of bad actors. This means, ensuring anonymization and checking the data pipeline for potential
@@ -129,7 +137,7 @@ spurious relations learnt from your dataset. This is a bigger issue, and we need
 It is our utmost responsibility while splitting data into train, test, and validation sets, or while splitting into cross-validation folds, that
 you ensure there is no data leakage. Multitudes before you have failed to ensure this simple fact and have paid the price for it. There is no
 place for these people in the heart of data realm. Splitting your data randomly may sometimes lead to same frames from a surgery, or from a patient
-to fall under both the training and validation set or across different folds <d-cite key="mercier2011humans"></d-cite>. If not ensured during the splitting process, this mode of failure
+to fall under both the training and validation set or across different folds. If not ensured during the splitting process, this mode of failure
 is very difficult to detect at later stages of the pipeline, and you may just be convinced that your model performs better. It is a good idea to use sklearn functions
     to ensure there is no data leakage while splitting your data. </p>
 
@@ -143,7 +151,8 @@ is very difficult to detect at later stages of the pipeline, and you may just be
 <p> She continued, with an eye toward her next destination that lay straight ahead of where they were walking. Data leakage is much more
 obvious but splitting can affect the performance of the data in more subtle ways. For example, if you have different subgroups
 in your dataset, you need to ensure that each split or the fold of the data adequately represents the distribution of your whole dataset.
-This is called stratified sampling, and can for example be done using the <code> sklearn.model_selection.StratifiedShuffleSplit </code>.
+This is called stratified sampling, and can for example be done using the <code>
+        sklearn.model_selection.StratifiedShuffleSplit </code> <d-cite key="noauthor_sklearnmodel_selectionstratifiedshufflesplit_nodate"></d-cite>.
 Otherwise, this will skew your results. Keep in mind that the distribution or the shape of the different classes in your folds must essentially reflect
     that of your dataset. Similarly, if your data has hierarchies, they must also be reflected in your different splits. </p>
 
@@ -153,7 +162,7 @@ MRI images. The number of images that contain a tumor may be very limited, which
 majority class, in this case no tumour. This would eventually lead to a misleading evaluation, especially a lower sensitivity,
 and missed detections as a result. There are a few ways to approach this. One technique is to oversample the minority class by
 generating synthetic data samples. Data augmentation is one method to achieve this. Techniques like SMOTE (Synthetic minority over-sampling
-technique) <d-cite key="mercier2011humans"></d-cite> creates new synthetic instances by interpolating between existing minority class instances. Alternatively,
+technique) <d-cite key="chawla_smote_2002"></d-cite> creates new synthetic instances by interpolating between existing minority class instances. Alternatively,
 under-sampling the majority class helps balance the classes and reduce risk of overfitting. The downside it that you potentially lose information
 that you could learn from. </p>
 
@@ -177,7 +186,7 @@ you have a small sample of data. While the relationship between the input variab
     caused as a result of choices made while acquiring your data, also called _sampling bias_. </p>
 
 <p> For example, assume you have the task of predicting
-tumor volume from features learnt from CT scans <d-cite key="mercier2011humans"></d-cite>. The size of the tumor is not only influenced by the image features but also a contrast agent.
+tumor volume from features learnt from CT scans <d-cite key="dockes_preventing_2021"></d-cite>. The size of the tumor is not only influenced by the image features but also a contrast agent.
 Here, selecting images of high resolution, or selecting images that have a particular strength of contrast agent, both introduce bias in selecting
 the data. The tumor volume learnt as a result is from a subset of the data that was had certain biases in the sampling, and now when the model
 encounters data from the wild, it has trouble to adapt to this shift in the distribution. One way to tackles this problem is by _importance weighting_.
@@ -185,9 +194,22 @@ This means weighting your data as per the importance expected to be observed in 
 observed in the source dataset but are more likely to be seen in the target dataset are assigned more importance. Another approach is to use
 uncertainty estimation to make the model robust to shifts that are expected to be observed.
 Keep in mind that it is not just data, but new relationships can evolve over time from your data. This is called _concept shift_.
-Take for example, a model that predicts patient mortality based on pneumonia <d-cite key="mercier2011humans"></d-cite>. The arrival of Covid-19 introduced a novel class as compared to bacterial
+Take for example, a model that predicts patient mortality based on pneumonia <d-cite key="huang_developing_2022"></d-cite>. The arrival of Covid-19 introduced a novel class as compared to bacterial
 pneumonia. Often a combination of both shifts may be observed in the real world. In the same example for instance, a model trained on
     pre-covid vaccination data may overestimate risk for a vaccinated population. </p>
+
+          <figure>
+      <img src="giab055fig3.jpg">
+      <figcaption style="text-align: center;">Sample selection bias: three examples. On the right are graphs giving conditional independence relations <d-cite key="pearl_causal_2016"></d-cite>.
+          Y is the lesion volume to be predicted (i.e., the output). M are the imaging parameters, e.g., contrast agent dosage. X is the image,
+          and depends both on Y and M (in this toy example X is computed as X:= Y+M, where ϵ is additive noise). S
+          indicates that data are selected
+          to enter the source dataset (orange points) or not (blue points). The symbol equation ⊥⊥ means independence between variables.
+          Preferentially selecting samples results in a dataset shift (middle and bottom row). Depending on whether
+          equation Y⊥⊥S|X,
+          the conditional distribution of Y|X—here lesion volume given the image—estimated on the selected data may be
+          biased or not. <d-cite key="dockes_preventing_2021"></d-cite></figcaption>
+    </figure>
 
 <p> After his long and winding journey, Luca now stood in the heart of the realm. He was at the precipice of the hallowed archive of wisdom,
 waiting with a sense of anticipation in every breath.
@@ -203,11 +225,6 @@ With a thoughtful grin, Luca outside to find his old friend, the squirrel, still
   </d-article>
 
   <d-appendix>
-
-    <h3>Contributions</h3>
-    <p>Some text describing who did what.</p>
-    <h3>Reviewers</h3>
-    <p>Some text with links describing who reviewed the article.</p>
 
     <d-bibliography src="bibliography.bib"></d-bibliography>
   </d-appendix>
