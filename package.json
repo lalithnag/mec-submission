@@ -4,7 +4,7 @@
   "description": "",
   "main": "template.v2.js",
   "scripts": {
-    "start": "http-server public/",
+    "start": "http-server docs/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
