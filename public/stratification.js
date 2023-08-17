@@ -1,4 +1,4 @@
-const margin = {top: 10, right: 0, bottom: 10, left: 10};
+const margin = {top: 20, right: 0, bottom: 10, left: 10};
 const svgHeight = 400;
 
 const grid = {nrRows: 5, nrCols: 5};
@@ -37,12 +37,17 @@ let dataclasses = g.selectAll('.dataclass')
 const sets = ['train', 'test'];
 const colors = d3.scaleOrdinal()
         .domain(sets)
-        .range(['#fdae61', '#abdda4', '#2b83ba']);
+        .range(['#fdae61', '#2b83ba', '#abdda4']);
 
 const setScale = d3.scaleBand()
         .domain(sets)
         .range([0, svgWidth - margin.left - margin.bottom])
         .paddingInner(0.2);
+
+const setClassScale = d3.scaleBand()
+        .domain(classes)
+        .range([0, setScale.bandwidth()])
+        .paddingOuter(0.3)
 
 dataclasses.each((p,j,nodes)=> {
     d3.select(nodes[j])
@@ -55,21 +60,44 @@ dataclasses.each((p,j,nodes)=> {
             .attr('font-size', '11pt')
             .html(`Class ${p + 1}`)
     );
+});
 
-    
 
-    d3.select(nodes[j])
-        .selectAll('.sample')
-        .data(samples.filter(e => e.dataclass === p))
+let calculateSampleXPosition = function(s) {
+    if(s.set) {
+        return setScale(s.set) + setClassScale(s.dataclass)
+    } else {
+        return classScale(s.dataclass) + (s.sortIdx % grid.nrCols * circleDistance);
+    }
+}
+
+let calculateSampleYPosition = function(s) {
+    if(s.set) {
+        return (svgHeight - margin.top - margin.bottom) - (Math.floor(s.sortIdx / grid.nrRows) * circleDistance);
+    } else {
+        return Math.floor(s.sortIdx / grid.nrRows) * circleDistance
+    }
+}
+
+
+let drawSamples = function() {
+    g.selectAll('.sample')
+        .data(samples, k => k.sample)
         .join(
             enter => enter.append('circle')
                 .attr('class', 'sample')
                 .attr('r', circleRadius)
-                .attr('cx', (d,i) => d.set ? setScale(d.set) : i % grid.nrCols * circleDistance)
-                .attr('cy', (d,i) => d.set ? setScale(d.set) : Math.floor(i / grid.nrRows) * circleDistance)
-                .attr('fill', classColors(p))
+                .attr('fill', d => classColors(d.dataclass))
+                .attr('cx', calculateSampleXPosition)
+                .attr('cy', calculateSampleYPosition),
+            update => update.transition()
+            .duration(2000)
+            .attr('cx', calculateSampleXPosition)
+            .attr('cy', calculateSampleYPosition)
         );
-});
+}
+
+drawSamples()
 
 const barHeight = 50;
 
@@ -86,17 +114,26 @@ g.selectAll('.set')
             .attr('opacity', 0.5)
     )
 
-
 let samping = function() {
-    let nrSamples = Math.floor(samples.reduce((p,c) => p + c.length) * splt[i]);
-    let counter = 0;
-    samples.flatMap(e => e).slice(nrSamples).forEach(e => e.set = 'train')
-    samples.flatMap(e => e).slice(nrSamples, ).forEach(e => e.set = 'test')
+    let nrSamples = Math.floor(samples.length * split[0]);
+    let classCounter = [[0,0,0,0], [0,0,0,0]]
+
+    samples.slice(0, nrSamples).forEach(e => e.set = 'train');
+    samples.slice(nrSamples).forEach(e => e.set = 'test');
+
+    samples.forEach(e => e.sortIdx = e.set === 'train' ? classCounter[0][e.dataclass]++ : classCounter[1][e.dataclass]++)
+
+    drawSamples();
 }
+
+document.getElementById("btn1").addEventListener("click", samping);
+
 
 function generateSamples(nrSamples) {
     let classIndex = nrSamples.flatMap((e,i) => d3.range(e).map(_ => i));
+    let classCounter = [0,0,0,0]
+
     return d3.range(d3.sum(nrSamples)).map((_,i) => {
-        return {sample: i, dataclass: classIndex[i], set: null}
+        return {sample: i, dataclass: classIndex[i], sortIdx: classCounter[classIndex[i]]++, set: null}
     })
 }
