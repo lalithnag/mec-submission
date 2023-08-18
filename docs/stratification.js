@@ -17,9 +17,11 @@ const g = d3.select('#stratification')
     .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
+const datasetBarMargin = {top: 0, right: 60, bottom: 0, left: 60};
+
 const dataScale = d3.scalePoint()
     .domain(samples.map(s => s.sample))
-    .range([0, svgWidth - margin.left - margin.right])
+    .range([0, svgWidth - margin.left - margin.right - datasetBarMargin.right - datasetBarMargin.left])
     .padding(1);
 
 const classColors = d3.scaleOrdinal()
@@ -38,15 +40,16 @@ const setScale = d3.scaleLinear()
 const rectHeight = 40;
 
 g.append('rect')
+    .attr('transform', `translate(${datasetBarMargin.left}, ${datasetBarMargin.top})`)
     .attr('x', 0)
-    .attr('width', svgWidth - margin.right - margin.left)
+    .attr('width', svgWidth - margin.right - margin.left - datasetBarMargin.right - datasetBarMargin.left)
     .attr('y', 0)
     .attr('height', rectHeight)
     .attr('fill', 'lightgray');
 
 let setG = g.append('g')
     .attr('class', 'set-g')
-    .attr('transform', `translate(0, ${60})`);
+    .attr('transform', `translate(0, ${100})`);
 
 let drawSetRects = function() {
     let splitAcc = split.map((e,i) => e + (split[i-1] || 0))
@@ -60,23 +63,20 @@ let drawSetRects = function() {
                 .attr('height', rectHeight)
                 .attr('fill', d => colors(d))
                 .attr('opacity', 0.3),
-            update => update
-                .transition()
-                .duration(100)
+            update => update.transition()
+                .duration(5000)
         )
         .attr('x', (_,i) => {
             if(i === 0) {
                 return 0;
             } else {
-                return dataScale(Math.floor((splitAcc[i] - split[i]) * samples.length)) + dataScale.step() / 2;
+                let nrSamples = Math.floor((splitAcc[i] - split[i]) * samples.length);
+                return dataScale(nrSamples) + dataScale.step() / 2 + datasetBarMargin.right + datasetBarMargin.left;
             }
-        })
-        .attr('width', (_,i) => {
-            if (i === 1) {
-                return setScale.range()[1];
-            } else {
-                return dataScale(Math.floor(split[i] * samples.length)) + dataScale.step() / 2;
-            }
+        }).attr('width', (_,i) => {
+                let nrSamples = Math.floor(split[i] * samples.length);
+                return dataScale(nrSamples) + dataScale.step() / 2;
+            
         });
 }
 
@@ -109,7 +109,7 @@ let initSamples = function() {
         .attr('class', 'sample')
         .attr('r', circleRadius)
         .attr('fill', d => classColors(d.dataclass))
-        .attr('cx', d => dataScale(d.sample))
+        .attr('cx', d => dataScale(d.sample) + datasetBarMargin.left)
         .attr('cy', rectHeight / 2)
 }
 
