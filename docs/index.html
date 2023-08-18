@@ -193,13 +193,13 @@ is very difficult to detect at later stages of the pipeline, and you may just be
 
     <div class="flex-row">
       <label>Ratio of training to test data: <span id="train-ratio">80</span>%</label>
-      <input id="ratio_slider" class="slider" type="range" value="80" min="10" max="90" step="10" />
+      <input id="ratio-slider" class="slider" type="range" value="80" min="10" max="90" step="10" />
     </div>
 
-    <div class="flex-row">
+    <!-- <div class="flex-row">
       <label>Number of classes: <span id="no_classes">10</span></label>
-      <input id="class_slider" class="slider" type="range" min="2" max="10" step="1" />
-    </div>
+      <input id="class-slider" class="slider" type="range" min="2" max="10" step="1" />
+    </div> -->
 
     <div class="flex-row">
       <div class="flex-item">
@@ -217,12 +217,12 @@ is very difficult to detect at later stages of the pipeline, and you may just be
       </div>
 
       <div class="flex-item">
-        <input type="radio" id="stratified-split" value="stratified" name="option">
+        <input type="radio" id="stratified-split" value="stratified" name="option" disabled>
         <label for="stratified-split">Stratified split</label>
       </div>
 
       <div class="flex-item">
-        <input type="radio" id="group-split" value="group" name="option">
+        <input type="radio" id="group-split" value="group" name="option" disabled>
         <label for="group-split">Group split</label>
       </div>
       <!-- <button id="btn1">Without shuffling</button>

@@ -1,7 +1,6 @@
-const margin = {top: 20, right: 0, bottom: 10, left: 10};
+const margin = {top: 20, right: 10, bottom: 10, left: 10};
 const svgHeight = 400;
 
-const grid = {nrRows: 5, nrCols: 5};
 const classes = d3.range(4);
 const samples = generateSamples([22,4,15,7]);
 
@@ -10,16 +9,18 @@ const circleDistance = 12;
 
 const svgWidth = d3.select('#stratification').node().getBoundingClientRect().width;
 
-let split = [0.5, 0.5]
+
+let split = [0.8, 0.2]
 
 const g = d3.select('#stratification')
     .attr('height', svgHeight)
     .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
-const dataScale = d3.scaleBand()
+const dataScale = d3.scalePoint()
     .domain(samples.map(s => s.sample))
-    .range([0, svgWidth - margin.left - margin.right]);
+    .range([0, svgWidth - margin.left - margin.right])
+    .padding(1);
 
 const classColors = d3.scaleOrdinal()
     .domain(classes)
@@ -30,45 +31,56 @@ const colors = d3.scaleOrdinal()
         .domain(sets)
         .range(['#fdae61', '#2b83ba', '#abdda4']);
 
-const setScale = d3.scaleBand()
-        .domain(sets)
-        .range([0, svgWidth - margin.left - margin.bottom])
-        .paddingInner(0.1);
+const setScale = d3.scaleLinear()
+        .domain([0,1])
+        .range([0, svgWidth - margin.left - margin.right]);
 
-const setClassScale = d3.scaleBand()
-        .domain(classes)
-        .range([0, setScale.bandwidth()])
-        .paddingOuter(0.3)
+const rectHeight = 40;
 
-// dataclasses.each((p,j,nodes)=> {
-//     d3.select(nodes[j])
-//     .selectAll('.class-label')
-//     .data([p])
-//     .join(
-//         enter => enter.append('text')
-//             .attr('class', 'class-label')
-//             .attr('font-style', 'italic')
-//             .attr('font-size', '11pt')
-//             .html(`Class ${p + 1}`)
-//     );
-// });
+g.append('rect')
+    .attr('x', 0)
+    .attr('width', svgWidth - margin.right - margin.left)
+    .attr('y', 0)
+    .attr('height', rectHeight)
+    .attr('fill', 'lightgray');
 
+let setG = g.append('g')
+    .attr('class', 'set-g')
+    .attr('transform', `translate(0, ${60})`);
 
-let calculateSampleXPosition = function(s) {
-    if(s.set) {
-        return setScale(s.set) + setClassScale(s.dataclass)
-    } else {
-        return dataScale(s.sortIdx);
-    }
+let drawSetRects = function() {
+    let splitAcc = split.map((e,i) => e + (split[i-1] || 0))
+
+    setG.selectAll('.set-rect')
+        .data(sets, k => k)
+        .join(
+            enter => enter.append('rect')
+                .attr('class', 'set-rect')
+                .attr('y', 0)
+                .attr('height', rectHeight)
+                .attr('fill', d => colors(d))
+                .attr('opacity', 0.3),
+            update => update
+                .transition()
+                .duration(100)
+        )
+        .attr('x', (_,i) => {
+            if(i === 0) {
+                return 0;
+            } else {
+                return dataScale(Math.floor((splitAcc[i] - split[i]) * samples.length)) + dataScale.step() / 2;
+            }
+        })
+        .attr('width', (_,i) => {
+            if (i === 1) {
+                return setScale.range()[1];
+            } else {
+                return dataScale(Math.floor(split[i] * samples.length)) + dataScale.step() / 2;
+            }
+        });
 }
 
-let calculateSampleYPosition = function(s) {
-    if(s.set) {
-        return (svgHeight - margin.top - margin.bottom) - (s.sortIdx * circleDistance);
-    } else {
-        return 0;
-    }
-}
+drawSetRects()
 
 let clearSamples = function() {
     samples.forEach(s => s.set = null);
@@ -89,20 +101,6 @@ let drawSampleShadows = function() {
         );
 }
 
-// let drawSamples = function() {
-//     return g.selectAll('.sample')
-//                 .data(samples, k => k.sample)
-//                 .join(
-//                     enter => enter
-//                     update => update.transition()
-//                         // .delay((_,i) => 70 * i)
-//                         .duration(2000)
-//                         .attr('cx', calculateSampleXPosition)
-//                         .attr('cy', calculateSampleYPosition)
-//                 );
-// }
-
-
 let initSamples = function() {
     g.selectAll('.sample')
         .data(samples, k => k.sample)
@@ -112,15 +110,15 @@ let initSamples = function() {
         .attr('r', circleRadius)
         .attr('fill', d => classColors(d.dataclass))
         .attr('cx', d => dataScale(d.sample))
-        .attr('cy', 0)
+        .attr('cy', rectHeight / 2)
 }
 
 let updateSamples = function() {
     return g.selectAll('.sample')
         .transition()
         .duration(2000)
-        .attr('cx', calculateSampleXPosition)
-        .attr('cy', calculateSampleYPosition)
+        .attr('cx', d => dataScale(d.sortIdx))
+        .attr('cy', d => d.set ? 80 : 20)
         .end()
 }
 
@@ -129,8 +127,8 @@ let updateSamplesDelay = function() {
         .transition()
         .delay((_,i) => 150 * i)
         .duration(2000)
-        .attr('cx', calculateSampleXPosition)
-        .attr('cy', calculateSampleYPosition)
+        .attr('cx', d => dataScale(d.sample))
+        .attr('cy',  80)
         .end()
 }
 
@@ -142,35 +140,35 @@ const barHeight = 50;
 
 const labelMargin = {top: 0, right: 0, bottom: 0, left: 0};
 
-g.selectAll('.set-label')
-    .data(sets)
-    .join(
-        enter => enter.append('text')
-            .attr('class', 'set-label')
-            .attr('x', d => setScale(d) + setScale.bandwidth() / 2)
-            .attr('y', svgHeight - margin.top - margin.bottom - labelMargin.bottom)
-            .attr('text-anchor', 'middle')
-            .attr('font-style', 'italic')
-            .attr('font-size', '11pt')
-            .html(d => 'Train')
-    );
+// g.selectAll('.set-label')
+//     .data(sets)
+//     .join(
+//         enter => enter.append('text')
+//             .attr('class', 'set-label')
+//             .attr('x', d => setScale(d) + setScale.bandwidth() / 2)
+//             .attr('y', svgHeight - margin.top - margin.bottom - labelMargin.bottom)
+//             .attr('text-anchor', 'middle')
+//             .attr('font-style', 'italic')
+//             .attr('font-size', '11pt')
+//             .html(d => 'Train')
+//     );
 
-const textHeight = d3.select('.set-label').node().getBBox().height;
+// const textHeight = d3.select('.set-label').node().getBBox().height;
 
-const lineWidth = 1;
+// const lineWidth = 1;
 
-g.selectAll('.set-line')
-    .data(sets)
-    .join(
-        enter => enter.append('line')
-            .attr('class', 'set-line')
-            .attr('x1', d => setScale(d))
-            .attr('x2', d => setScale(d) + setScale.bandwidth())
-            .attr('y1', svgHeight - margin.top - margin.bottom - labelMargin.bottom - textHeight - labelMargin.top)
-            .attr('y2', svgHeight - margin.top - margin.bottom - labelMargin.bottom - textHeight - labelMargin.top)
-            .attr('stroke', 'black')
-            .attr('stroke-width', lineWidth)
-    );
+// g.selectAll('.set-line')
+//     .data(sets)
+//     .join(
+//         enter => enter.append('line')
+//             .attr('class', 'set-line')
+//             .attr('x1', d => setScale(d))
+//             .attr('x2', d => setScale(d) + setScale.bandwidth())
+//             .attr('y1', svgHeight - margin.top - margin.bottom - labelMargin.bottom - textHeight - labelMargin.top)
+//             .attr('y2', svgHeight - margin.top - margin.bottom - labelMargin.bottom - textHeight - labelMargin.top)
+//             .attr('stroke', 'black')
+//             .attr('stroke-width', lineWidth)
+//     );
 
 const withoutShuffling = function() {
     clearSamples();
@@ -218,15 +216,16 @@ d3.select('#split-btn').on('click', (e) => {
     if(splitMode === "index") {
         withoutShuffling();
     } else if (splitMode === "shuffle") {
+        console.log('shuffle')
         shuffledSplit();
     }
 });
 
-d3.select("#ratio_slider").on("input", (e) => {
+d3.select("#ratio-slider").on("input", (e) => {
     let trainTestRatio = d3.select(e.currentTarget).property('value');
     d3.select('#train-ratio').html(trainTestRatio);
     split = [trainTestRatio / 100, 1 - (trainTestRatio / 100)];
-    console.log(split)
+    drawSetRects()
 });
 
 function generateSamples(nrSamples) {
