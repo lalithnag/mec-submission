@@ -18,9 +18,46 @@
 
 <head>
   <script src="lib/template.v2.js"></script>
-  <script src="lib/d3.v7.js"></script>
+  <script src="lib/d3.v7.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf8">
+
+  <style>
+    .flex-row {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .flex-item {
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
+    }
+
+    .slider {
+      cursor: pointer;
+      margin: 0 20px;
+    }
+
+    .button {
+      height: 34px;
+      color: rgba(0, 0, 0, 0.6);
+      border: none;
+      background: rgba(158,158,158,.3);
+      border-radius: 3px;
+      padding: 5px;
+      font-size: 12px;
+      text-transform: uppercase;
+      outline: none;
+      transition: background 0.3s linear;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      background: rgba(158,158,158,.5);
+      color: rgba(0, 0, 0, 0.8);
+    }
+  </style>
 </head>
 
 <body>
@@ -59,7 +96,8 @@
   </d-title>
   <d-byline></d-byline>
   <d-article>
-    <a class="marker" href="#section-1" id="section-1"><span>1</span></a>
+    <a class="marker" href="#section_1" id="section-1"><span>Chapter 1</span></a>
+    <a class="marker" href="#section_2" id="section-2"><span>Chapter 2</span></a>
       <p> It was on a warm and breezy Friday afternoon that Luca, having indulged in a heavy lunch, found himself gazing at a determined squirrel
         that was perched on his window sill. The squirrel, clutching a stubborn nutshell with its tiny paws, executed an array of maneuvers with
         intense focus. It began by turning the nut around, testing its angles and seams, while steadily biting and gnawing with determination.
@@ -72,7 +110,7 @@
       <q> Come with me. Now. There's no time to explain </q>
       <q> Wh..What? </q>
 
-    <h3>Chapter 1: Exploration</h3>
+    <h3 id="section_1">Chapter 1: Exploration</h3>
       <p> And so it was, that Luca now found himself in a strange and peculiar land. What he saw seemed both familiar and foreign to him, as he stared in disbelief
     at the boundless expanse that lay in front of him. Suddenly, Luca's thoughts turned to the unfinished work, his model that was probably training, the cluttered desk and the creaky chair that he
     left behind, all of which seemed like a world far far away from the one he was now standing in.
@@ -112,6 +150,10 @@ You might need to look further and investigate the possible causal factors that 
 risk of pneumonia, they found that asthma patients showed a lower risk of pneumonia. This is counter-intuitive but deeper investigation showed that the asthmatic patients who were directly admitted to the intensive care
     unit, received better care that resulted in a now decreased risk of pneumonia compared to the rest of the population. </p>
 
+    <aside markdown="1">
+      abcd
+    </aside>
+
     <figure class="l-page">
       <img src="nejmon1211064_f1.jpeg">
       <figcaption style="text-align: center;">Correlation between Countries' Annual Per Capita Chocolate Consumption and the Number of Nobel
@@ -129,7 +171,7 @@ it, and not let it fall under the hands of bad actors. This means, ensuring anon
 vulnerabilities. One must indeed to check the scope to which the data is exposed, and if necessary shield sensitive data from parts of your pipeline. Some may even turn to differential privacy or federated learning in
     this regard. </p>
 
-<h3>Chapter 2: A balancing act</h3>
+<h3 href="#section_2">Chapter 2: A balancing act</h3>
       <p> The two travellers then began their journey to <i> Archive of wisdom </i> at the heart of the realm. Luca's head was brimming
 with all the information he had just received, while his companion, who now looked focused on her immediate surroundings,
 turned to him and started in an anxious tone, 'Dear Luca, a little while ago I told you about data splitting and how it could introduce
@@ -141,13 +183,60 @@ to fall under both the training and validation set or across different folds. If
 is very difficult to detect at later stages of the pipeline, and you may just be convinced that your model performs better. It is a good idea to use sklearn functions
     to ensure there is no data leakage while splitting your data. </p>
 
-        <svg id="stratification" width="100%"></svg>
-        <div id="controls">
-          <button id="btn1">Without shuffling</button>
-          <button id="btn2">Shuffled split</button>
-          <button disabled>Stratified split</button>
-          <button disabled>Group split</button>
-        </div>
+<d-figure class="l-page" style="display: flex">
+  <div style="flex: 0 0 80%;">
+    <svg id="stratification" width="100%"></svg>
+  </div>
+
+  <div id="controls"
+    style="flex: 0 0 20%; display: flex; flex-direction: column; font-size: 10pt; gap: 10px; background-color: #f7f7f7; padding: 5px 10px;">
+
+    <div class="flex-row">
+      <label>Ratio of training to test data: <span id="train-ratio">80</span>%</label>
+      <input id="ratio_slider" class="slider" type="range" value="80" min="10" max="90" step="10" />
+    </div>
+
+    <div class="flex-row">
+      <label>Number of classes: <span id="no_classes">10</span></label>
+      <input id="class_slider" class="slider" type="range" min="2" max="10" step="1" />
+    </div>
+
+    <div class="flex-row">
+      <div class="flex-item">
+        <legend>Split options:</legend>
+      </div>
+
+      <div class="flex-item">
+        <input type="radio" id="index-split" value="index" name="option" checked>
+        <label for="index-split">Index split</label>
+      </div>
+
+      <div class="flex-item">
+        <input type="radio" id="shuffle-split" value="shuffle" name="option">
+        <label for="shuffle-split">Shuffle split</label>
+      </div>
+
+      <div class="flex-item">
+        <input type="radio" id="stratified-split" value="stratified" name="option">
+        <label for="stratified-split">Stratified split</label>
+      </div>
+
+      <div class="flex-item">
+        <input type="radio" id="group-split" value="group" name="option">
+        <label for="group-split">Group split</label>
+      </div>
+      <!-- <button id="btn1">Without shuffling</button>
+                        <button id="btn2">Shuffled split</button>
+                        <button disabled>Stratified split</button>
+                        <button disabled>Group split</button>
+                        <button disabled>Group shuffle split</button> -->
+
+    </div>
+    <div class="flex-row">
+      <button class="button" id="split-btn">Split data</button>
+    </div>
+  </div>
+</d-figure>
 
 <p> She continued, with an eye toward her next destination that lay straight ahead of where they were walking. Data leakage is much more
 obvious but splitting can affect the performance of the data in more subtle ways. For example, if you have different subgroups
@@ -211,7 +300,7 @@ pneumonia. Often a combination of both shifts may be observed in the real world.
           equation Y⊥⊥S|X,
           the conditional distribution of Y|X—here lesion volume given the image—estimated on the selected data may be
           biased or not. <d-cite key="dockes_preventing_2021"></d-cite></figcaption>
-    </figure>
+      </figure>
 
 <p> After his long and winding journey, Luca now stood in the heart of the realm. He was at the precipice of the hallowed archive of wisdom,
 waiting with a sense of anticipation in every breath.
