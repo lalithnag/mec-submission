@@ -1,8 +1,11 @@
-const margin = {top: 20, right: 10, bottom: 10, left: 10};
+import { generateSamples, shuffleSamples, splitToFiles } from "./util.js";
+
+
+const margin = {top: 20, right: 10, bottom: 0, left: 10};
 const svgHeight = 400;
 
 const classes = d3.range(4);
-const samples = generateSamples([22,4,15,7]);
+const samples = generateSamples([1,1,1,1]); // 22,4,15,7
 
 const circleRadius = 4;
 const circleDistance = 12;
@@ -17,12 +20,16 @@ const g = d3.select('#stratification')
     .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
-const datasetBarMargin = {top: 0, right: 60, bottom: 0, left: 60};
+const datasetBarMargin = {top: 0, right: 50, bottom: 0, left: 50};
 
 const dataScale = d3.scalePoint()
     .domain(samples.map(s => s.sample))
     .range([0, svgWidth - margin.left - margin.right - datasetBarMargin.right - datasetBarMargin.left])
-    .padding(1);
+    .padding(0.5);
+
+const dataAmountScale = d3.scalePoint()
+    .domain(samples.map(s => s.sample))
+    .range([0, svgWidth - margin.left - margin.right - datasetBarMargin.right - datasetBarMargin.left]);
 
 const classColors = d3.scaleOrdinal()
     .domain(classes)
@@ -33,9 +40,9 @@ const colors = d3.scaleOrdinal()
         .domain(sets)
         .range(['#fdae61', '#2b83ba', '#abdda4']);
 
-const setScale = d3.scaleLinear()
-        .domain([0,1])
-        .range([0, svgWidth - margin.left - margin.right]);
+let setXScale = d3.scaleOrdinal()
+        .domain(sets)
+        .range([0, (svgWidth - margin.right - margin.left) * split[0] + datasetBarMargin.right + datasetBarMargin.left]);
 
 const rectHeight = 40;
 
@@ -45,17 +52,20 @@ g.append('rect')
     .attr('width', svgWidth - margin.right - margin.left - datasetBarMargin.right - datasetBarMargin.left)
     .attr('y', 0)
     .attr('height', rectHeight)
-    .attr('fill', 'lightgray');
+    .attr('fill', 'lightgray')
+    .attr('opacity', 0.1);
 
 let setG = g.append('g')
     .attr('class', 'set-g')
     .attr('transform', `translate(0, ${100})`);
 
 let drawSetRects = function() {
-    let splitAcc = split.map((e,i) => e + (split[i-1] || 0))
+    let nrFiles = splitToFiles(split, samples.length)
+
+    setXScale.range([0, dataScale(nrFiles[0] - 1) + dataScale.step() / 2 + datasetBarMargin.right + datasetBarMargin.left]);
 
     setG.selectAll('.set-rect')
-        .data(sets, k => k)
+        .data(sets)
         .join(
             enter => enter.append('rect')
                 .attr('class', 'set-rect')
@@ -65,18 +75,25 @@ let drawSetRects = function() {
                 .attr('opacity', 0.3),
             update => update.transition()
                 .duration(5000)
-        )
-        .attr('x', (_,i) => {
-            if(i === 0) {
+        ).attr('x', (d, i) => {
+            if (i === 0) {
                 return 0;
             } else {
-                let nrSamples = Math.floor((splitAcc[i] - split[i]) * samples.length);
-                return dataScale(nrSamples) + dataScale.step() / 2 + datasetBarMargin.right + datasetBarMargin.left;
+                return setXScale(d);
             }
-        }).attr('width', (_,i) => {
-                let nrSamples = Math.floor(split[i] * samples.length);
-                return dataScale(nrSamples) + dataScale.step() / 2;
-            
+        }).attr('width', (_, i) => {
+            if (nrFiles[i] === 0) {
+                return 0;
+            } else {
+                let step;
+                if (nrFiles[i] === samples.length) {
+                    step = dataScale.step();
+                } else {
+                    step = dataScale.step() / 2;
+                }
+
+                return dataScale(nrFiles[i] - 1) + step;
+            }
         });
 }
 
@@ -118,7 +135,7 @@ let updateSamples = function() {
         .transition()
         .duration(2000)
         .attr('cx', d => dataScale(d.sortIdx))
-        .attr('cy', d => d.set ? 80 : 20)
+        .attr('cy', d => d.set ? 120 : 20)
         .end()
 }
 
@@ -208,7 +225,7 @@ const shuffledSplit = async function() {
 
     samples.forEach(e => e.sortIdx = e.set === 'train' ? classCounter[0][e.dataclass]++ : classCounter[1][e.dataclass]++)
 
-    updateSamplesDelay();
+    updateSamples();
 }
 
 d3.select('#split-btn').on('click', (e) => {
@@ -228,22 +245,3 @@ d3.select("#ratio-slider").on("input", (e) => {
     drawSetRects()
 });
 
-function generateSamples(nrSamples) {
-    let classIndex = nrSamples.flatMap((e,i) => d3.range(e).map(_ => i));
-    let classCounter = [0,0,0,0]
-
-    return d3.range(d3.sum(nrSamples)).map((_,i) => {
-        return {sample: i, dataclass: classIndex[i], sortIdx: classCounter[classIndex[i]]++, set: null}
-    })
-}
-
-// inplace shuffling
-function shuffleSamples(array) {
-    let j, x, i;
-    for (i = array.length - 1; i > 0; i--) {
-        j = Math.floor(Math.random() * (i + 1));
-        x = array[i];
-        array[i] = array[j];
-        array[j] = x;
-    }
-}
