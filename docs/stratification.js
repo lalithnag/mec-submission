@@ -131,9 +131,11 @@ let updateSamplesDelay = function() {
 }
 
 let resetSamples = function() {
-    clearSamples();
-    initSampleData();
-    initSamples();
+    if(samples[0].set) {
+        clearSamples();
+        initSampleData();
+        initSamples();
+    }
 }
 
 initSamples()
@@ -207,6 +209,30 @@ d3.select('#split-btn').on('click', () => {
     } else if (splitMode === "stratified") {
         stratifiedsplit();
     }
+});
+
+d3.select('#sort-btn').on('click', () => {
+    if(!samples[0].set) {
+        samples.sort((a, b) => a.dataclass - b.dataclass);
+
+        samples.forEach((s,i) => s.sortIdx = i);
+
+        updateSamples();
+    }
+});
+
+d3.select('#shuffle-btn').on('click', () => {
+    if(!samples[0].set) {
+        shuffleSamples(samples);
+
+        samples.forEach((s,i) => s.sortIdx = i);
+
+        updateSamples();
+    }
+});
+
+d3.select('#reset-btn').on('click', () => {
+    resetSamples();
 });
 
 let updateActualSetSize = function(newSplit, newSplitfiles) {

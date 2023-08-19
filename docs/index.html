@@ -191,6 +191,11 @@ is very difficult to detect at later stages of the pipeline, and you may just be
   <div id="controls"
     style="flex: 0 0 20%; display: flex; flex-direction: column; font-size: 10pt; gap: 10px; background-color: #f7f7f7; padding: 5px 10px;">
 
+    <div class="flex-item">
+      <button class="button" id="sort-btn" style="flex: 1;">Sort</button>
+      <button class="button" id="shuffle-btn" style="flex: 1;">Shuffle</button>
+    </div>
+
     <div class="flex-row">
       <label>Ratio of training to test data: <span id="train-ratio">80</span>%</label>
       <input id="ratio-slider" class="slider" type="range" value="80" min="10" max="90" step="10" />
@@ -232,8 +237,9 @@ is very difficult to detect at later stages of the pipeline, and you may just be
                         <button disabled>Group shuffle split</button> -->
 
     </div>
-    <div class="flex-row">
-      <button class="button" id="split-btn">Split data</button>
+    <div class="flex-item">
+      <button class="button" id="split-btn" style="flex: 3;">Split data</button>
+      <button class="button" id="reset-btn" style="flex: 1;">Reset</button>
     </div>
   </div>
 </d-figure>
