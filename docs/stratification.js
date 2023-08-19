@@ -5,7 +5,7 @@ const svgHeight = 400;
 const svgWidth = d3.select('#stratification').node().getBoundingClientRect().width;
 
 const classes = d3.range(4);
-const nrSamples = [22,4,15,7];
+const nrSamples = [22,4,15,9];
 let samples = generateSamples(nrSamples);
 
 const sets = ['train', 'test'];
@@ -15,7 +15,6 @@ let splitFiles = splitToFiles(split, samples.length)
 const circleRadius = 4;
 const rectHeight = 40;
 let setRectY = 80;
-
 
 const g = d3.select('#stratification')
     .attr('height', svgHeight)
@@ -47,8 +46,9 @@ g.append('rect')
     .attr('width', svgWidth - margin.right - margin.left - datasetBarMargin.right - datasetBarMargin.left)
     .attr('y', 0)
     .attr('height', rectHeight)
+    .attr('rx', 5)
     .attr('fill', 'lightgray')
-    .attr('opacity', 0.1);
+    .attr('opacity', 0.2);
 
 let setG = g.append('g')
     .attr('class', 'set-g')
@@ -62,8 +62,9 @@ let drawSetRects = function() {
                 .attr('class', 'set-rect')
                 .attr('y', 0)
                 .attr('height', rectHeight)
+                .attr('rx', 5)
                 .attr('fill', d => colors(d))
-                .attr('opacity', 0.3)
+                .attr('opacity', 0.2)
                 .attr('x', d => setXOffsetScale(d))
                 .attr('width', (_, i) => splitFiles[0] === 0 ? 0 : dataScale(splitFiles[i] - 1) + dataScale.step()),
             update => update.transition()
@@ -113,7 +114,7 @@ let initSamples = function() {
 let updateSamples = function() {
     return g.selectAll('.sample')
         .transition()
-        .duration(2000)
+        .duration(1000)
         .attr('cx', d => d.set ? dataScale(d.sortIdx) + setXOffsetScale(d.set) : dataScale(d.sortIdx) + setXOffsetScale(d.set) + datasetBarMargin.left)
         .attr('cy', d => d.set ? setRectY + rectHeight / 2 : rectHeight / 2)
         .end()
@@ -122,10 +123,10 @@ let updateSamples = function() {
 let updateSamplesDelay = function() {
     return g.selectAll('.sample')
         .transition()
-        .delay((_,i) => 150 * i)
-        .duration(2000)
-        .attr('cx', d => dataScale(d.sample))
-        .attr('cy',  80)
+        .delay(d => 500 * d.displayIdx)
+        .duration(1000)
+        .attr('cx', d => d.set ? dataScale(d.sortIdx) + setXOffsetScale(d.set) : dataScale(d.sortIdx) + setXOffsetScale(d.set) + datasetBarMargin.left)
+        .attr('cy', d => d.set ? setRectY + rectHeight / 2 : rectHeight / 2)
         .end()
 }
 
@@ -162,28 +163,66 @@ const shuffleSplit = async function() {
     updateSamples();
 }
 
+
+const stratifiedsplit = async function() {
+    let classCounter = [0,0];
+    classes.forEach((cl, i) => {
+        let clSamples = samples.filter(s => s.dataclass === cl);
+        shuffleSamples(clSamples);
+
+        let ratio = clSamples.length / samples.length;
+
+        let nrTrainFiles = Math.floor(splitFiles[0] * ratio);
+        
+        clSamples.slice(0, nrTrainFiles).forEach((s,j) => {s.set = 'train'; s.displayIdx = i; s.sortIdx = classCounter[0]++});
+        clSamples.slice(nrTrainFiles).forEach((s,j) => {s.set = 'test'; s.displayIdx = i; s.sortIdx = classCounter[1]++});
+
+    });
+
+    updateActualSetSize(split, classCounter);
+    drawSetRects();
+    updateSamplesDelay();
+
+    // sets.forEach(set => {
+    //     let setSamples = samples.filter(s => s.set === set);
+    //     shuffleSamples(setSamples);
+
+    //     setSamples.forEach((s,i) => s.sortIdx = i);
+    // });
+
+    // updateSamples();
+}
+
 d3.select('#split-btn').on('click', () => {
     let splitMode = d3.select('input[name="option"]:checked').property("value");
     
     resetSamples();
+    updateActualSetSize(split);
+    drawSetRects();
 
     if(splitMode === "index") {
         indexSplit();
     } else if (splitMode === "shuffle") {
         shuffleSplit();
+    } else if (splitMode === "stratified") {
+        stratifiedsplit();
     }
 });
+
+let updateActualSetSize = function(newSplit, newSplitfiles) {
+    split = newSplit;
+    splitFiles = newSplitfiles ? newSplitfiles : splitToFiles(split, samples.length);
+
+    setXOffsetScale.range([0, (dataScale(splitFiles[0] - 1) || 0) + datasetBarMargin.right + datasetBarMargin.left]);
+}
 
 d3.select("#ratio-slider").on("input", (e) => {
     let trainTestRatio = d3.select(e.currentTarget).property('value');
     d3.select('#train-ratio').html(trainTestRatio);
 
     // update data
-    split = [trainTestRatio / 100, 1 - (trainTestRatio / 100)];
-    splitFiles = splitToFiles(split, samples.length);
-    setXOffsetScale.range([0, (dataScale(splitFiles[0] - 1) || 0) + datasetBarMargin.right + datasetBarMargin.left]);
-
     resetSamples();
+    updateActualSetSize([trainTestRatio / 100, 1 - (trainTestRatio / 100)]);
     drawSetRects();
 });
 
