@@ -1,9 +1,8 @@
 function generateSamples(nrSamples) {
     let classIndex = nrSamples.flatMap((e,i) => d3.range(e).map(_ => i));
-    let classCounter = [0,0,0,0]
 
     return d3.range(d3.sum(nrSamples)).map((_,i) => {
-        return {sample: i, dataclass: classIndex[i], sortIdx: classCounter[classIndex[i]]++, set: null}
+        return {sample: i, dataclass: classIndex[i], sortIdx: i, set: null}
     })
 }
 

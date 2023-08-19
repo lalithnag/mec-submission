@@ -1,11 +1,12 @@
 import { generateSamples, shuffleSamples, splitToFiles } from "./util.js";
 
-const margin = {top: 20, right: 10, bottom: 0, left: 10};
+const margin = {top: 20, right: 50, bottom: 0, left: 10};
 const svgHeight = 400;
 const svgWidth = d3.select('#stratification').node().getBoundingClientRect().width;
 
 const classes = d3.range(4);
-const samples = generateSamples([22,4,15,7]); // 22,4,15,7
+const nrSamples = [22,4,15,7];
+let samples = generateSamples(nrSamples);
 
 const sets = ['train', 'test'];
 let split = [0.8, 0.2]
@@ -13,18 +14,20 @@ let splitFiles = splitToFiles(split, samples.length)
 
 const circleRadius = 4;
 const rectHeight = 40;
+let setRectY = 80;
+
 
 const g = d3.select('#stratification')
     .attr('height', svgHeight)
     .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
-const datasetBarMargin = {top: 0, right: 70, bottom: 0, left: 70};
+const datasetBarMargin = {top: 0, right: 50, bottom: 0, left: 50};
 
 const dataScale = d3.scalePoint()
     .domain(samples.map(s => s.sample))
     .range([0, svgWidth - margin.left - margin.right - datasetBarMargin.right - datasetBarMargin.left])
-    .padding(0.5);
+    .padding(1);
 
 const classColors = d3.scaleOrdinal()
     .domain(classes)
@@ -36,7 +39,7 @@ const colors = d3.scaleOrdinal()
 
 let setXOffsetScale = d3.scaleOrdinal()
         .domain(sets)
-        setXOffsetScale.range([0, (dataScale(splitFiles[0] - 1) + dataScale.step() / 2 || 0) + datasetBarMargin.right + datasetBarMargin.left]);
+        setXOffsetScale.range([0, (dataScale(splitFiles[0] - 1) || 0) + datasetBarMargin.right + datasetBarMargin.left]);
 
 g.append('rect')
     .attr('transform', `translate(${datasetBarMargin.left}, ${datasetBarMargin.top})`)
@@ -47,11 +50,9 @@ g.append('rect')
     .attr('fill', 'lightgray')
     .attr('opacity', 0.1);
 
-let rectY = 100;
-
 let setG = g.append('g')
     .attr('class', 'set-g')
-    .attr('transform', `translate(0, ${100})`);
+    .attr('transform', `translate(0, ${setRectY})`);
 
 let drawSetRects = function() {
     setG.selectAll('.set-rect')
@@ -64,19 +65,23 @@ let drawSetRects = function() {
                 .attr('fill', d => colors(d))
                 .attr('opacity', 0.3)
                 .attr('x', d => setXOffsetScale(d))
-                .attr('width', (_, i) => splitFiles[0] === 0 ? 0 : dataScale(splitFiles[i] - 1) + dataScale.step() / 2),
+                .attr('width', (_, i) => splitFiles[0] === 0 ? 0 : dataScale(splitFiles[i] - 1) + dataScale.step()),
             update => update.transition()
                 .duration(1000)
                 .attr('x', d => setXOffsetScale(d))
-                .attr('width', (_, i) => splitFiles[0] === 0 ? 0 : dataScale(splitFiles[i] - 1) + dataScale.step() / 2),
+                .attr('width', (_, i) => splitFiles[0] === 0 ? 0 : dataScale(splitFiles[i] - 1) + dataScale.step()),
         )
 }
 
 drawSetRects();
 
 let clearSamples = function() {
-    samples.forEach(s => s.set = null);
+    samples = []
     g.selectAll('.sample').remove();
+}
+
+let initSampleData = function() {
+    samples = generateSamples(nrSamples);
 }
 
 let drawSampleShadows = function() {
@@ -109,8 +114,8 @@ let updateSamples = function() {
     return g.selectAll('.sample')
         .transition()
         .duration(2000)
-        .attr('cx', d => dataScale(d.sortIdx) + setXOffsetScale(d.set))
-        .attr('cy', d => d.set ? rectY + rectHeight / 2 : rectHeight / 2)
+        .attr('cx', d => d.set ? dataScale(d.sortIdx) + setXOffsetScale(d.set) : dataScale(d.sortIdx) + setXOffsetScale(d.set) + datasetBarMargin.left)
+        .attr('cy', d => d.set ? setRectY + rectHeight / 2 : rectHeight / 2)
         .end()
 }
 
@@ -124,6 +129,12 @@ let updateSamplesDelay = function() {
         .end()
 }
 
+let resetSamples = function() {
+    clearSamples();
+    initSampleData();
+    initSamples();
+}
+
 initSamples()
 // drawSampleShadows()
 
@@ -131,11 +142,19 @@ const barHeight = 50;
 
 const labelMargin = {top: 0, right: 0, bottom: 0, left: 0};
 
-const withoutShuffling = function() {
-    clearSamples();
-    initSamples();
+const indexSplit = function() {
+    samples.slice(0, splitFiles[0]).forEach((e, i) => {e.set = 'train'; e.sortIdx = i});
+    samples.slice(splitFiles[0]).forEach((e,i) => {e.set = 'test'; e.sortIdx = i});
 
-    console.log(splitFiles[0])
+    updateSamples();
+}
+
+const shuffleSplit = async function() {
+    shuffleSamples(samples);
+
+    samples.forEach((s,i) => s.sortIdx = i);
+
+    await updateSamples();
 
     samples.slice(0, splitFiles[0]).forEach((e, i) => {e.set = 'train'; e.sortIdx = i});
     samples.slice(splitFiles[0]).forEach((e,i) => {e.set = 'test'; e.sortIdx = i});
@@ -143,38 +162,15 @@ const withoutShuffling = function() {
     updateSamples();
 }
 
-const shuffledSplit = async function() {
-    clearSamples();
-    initSamples();
-
-    shuffleSamples(samples);
-
-    let counter = 0;
-    samples.forEach(s => s.sortIdx = counter++);
-
-    await updateSamples();
-
-    let nrSamples = Math.floor(samples.length * split[0]);
-    let classCounter = [[0,0,0,0], [0,0,0,0]];
-
-    samples.slice(0, nrSamples).forEach(e => e.set = 'train');
-    samples.slice(nrSamples).forEach(e => e.set = 'test');
-
-    // sort again
-    samples.sort((a,b) => a.sample - b.sample);
-
-    samples.forEach(e => e.sortIdx = e.set === 'train' ? classCounter[0][e.dataclass]++ : classCounter[1][e.dataclass]++)
-
-    updateSamples();
-}
-
-d3.select('#split-btn').on('click', (e) => {
+d3.select('#split-btn').on('click', () => {
     let splitMode = d3.select('input[name="option"]:checked').property("value");
+    
+    resetSamples();
+
     if(splitMode === "index") {
-        withoutShuffling();
+        indexSplit();
     } else if (splitMode === "shuffle") {
-        console.log('shuffle')
-        shuffledSplit();
+        shuffleSplit();
     }
 });
 
@@ -185,10 +181,9 @@ d3.select("#ratio-slider").on("input", (e) => {
     // update data
     split = [trainTestRatio / 100, 1 - (trainTestRatio / 100)];
     splitFiles = splitToFiles(split, samples.length);
-    setXOffsetScale.range([0, (dataScale(splitFiles[0] - 1) + dataScale.step() / 2 || 0) + datasetBarMargin.right + datasetBarMargin.left]);
+    setXOffsetScale.range([0, (dataScale(splitFiles[0] - 1) || 0) + datasetBarMargin.right + datasetBarMargin.left]);
 
-    clearSamples();
-    initSamples();
+    resetSamples();
     drawSetRects();
 });
 
