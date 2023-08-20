@@ -18,6 +18,8 @@ let setRectY = 120;
 
 let sampleSetsCounter = sets.map(_ => classes.map(c => 0));
 
+let inProgress = false;
+
 const g = d3.select('#stratification')
     .attr('height', svgHeight)
     .append("g")
@@ -153,10 +155,24 @@ let drawSetRects = function() {
 
 drawSetRects();
 
+
+g.append('line')
+    .attr('transform', `translate(0, ${setRectY + rectHeight + datasetTextHeight})`)
+    .attr('x1', 0)
+    .attr('x2', svgWidth - margin.right - margin.left)
+    .attr('y1', 0)
+    .attr('y2', 0)
+    .attr('stroke', 'lightgray')
+    .attr('stroke-width', 2)
+    .attr('stroke-opacity', 0.3);
+
 // barchart area
+const barChartTopMargin = 20;
+const barchartLabelMargin = 15;
+
 let barchartG = g.append('g')
     .attr('class', 'barchart-g')
-    .attr('transform', `translate(0, ${setRectY + rectHeight + datasetTextHeight})`);
+    .attr('transform', `translate(0, ${setRectY + rectHeight + datasetTextHeight + barChartTopMargin})`);
 
 let chartXScale = d3.scaleBand()
     .domain(d3.range(3))
@@ -165,7 +181,8 @@ let chartXScale = d3.scaleBand()
 
 let dataclassXScale = d3.scaleBand()
     .domain(classes)
-    .range([0, chartXScale.bandwidth()]);
+    .range([0, chartXScale.bandwidth()])
+    .padding(0.1);;
 
 const barchartHeight = 100;
 
@@ -173,11 +190,25 @@ let dataclassYScale = d3.scaleLinear()
     .domain([0, d3.max(nrSamples)])
     .range([barchartHeight, 0]);
 
+barchartG.append('text')
+    .attr('class', 'chart-title-dataset header-medium')
+    .attr('x', chartXScale(0) + chartXScale.bandwidth() / 2)
+    .attr('dominant-baseline', 'middle')
+    .attr('text-anchor', 'middle')
+    .attr('fill', 'gray')
+    .html('Dataset');
+
+let chartsG = barchartG.append('g')
+    .attr('class', 'barchart-g')
+    .attr('transform', `translate(0, ${barchartLabelMargin})`);
+
 let classData = d3.rollup(samples, v => v.length, k => k.dataclass);
 
-barchartG.append('g')
+let datasetBarchart = chartsG.append('g')
     .attr('class', 'barchart')
-    .attr('transform', `translate(${chartXScale(0)})`)
+    .attr('transform', `translate(${chartXScale(0)})`);
+
+datasetBarchart.append('g')
     .selectAll('bar')
     .data(classes)
     .join(
@@ -189,53 +220,115 @@ barchartG.append('g')
             .attr('height', d => dataclassYScale(0) - dataclassYScale(classData.get(d)) )
             .attr('fill', d => classColors(d))
             .attr('opacity', 0.5)
-    )
+    );
 
+datasetBarchart.append('g')
+    .attr("transform", "translate(0," + barchartHeight + ")")
+    .call(d3.axisBottom(dataclassXScale)
+        .tickFormat(d => `Class ${d}`)
+    )
+    .selectAll("text")
+    .attr("transform", "translate(-10,0)rotate(-45)")
+    .style("text-anchor", "end");
+
+datasetBarchart.append("g")
+    .call(d3.axisLeft(dataclassYScale)
+        .ticks(6)
+    );
+
+datasetBarchart.append('text')
+    .attr('class', 'header-small')
+    .attr('x', -30)
+    .attr('y', dataclassYScale.range()[0] / 2)
+    .attr("transform", `rotate(${-90} ${-30} ${dataclassYScale.range()[0] / 2})`)
+    .attr('dominant-baseline', 'middle')
+    .attr('text-anchor', 'middle')
+    .attr('fill', 'gray')
+    .html('No. of samples');
 
 let drawClassBarchart = function() {
-    // let classDataSets = [
-    //     d3.rollup(samples.filter(s => s.dataclass === 'train'), v => v.length, k => k.dataclass),
-    //     d3.rollup(samples.filter(s => s.dataclass === 'test'), v => v.length, k => k.dataclass)
-    // ];
 
-    let group = barchartG.selectAll('.barchart-set')
+    barchartG.selectAll('.chart-title')
+        .data(sets, k => k)
+        .join(
+            enter => enter.append('text')
+                .attr('class', 'chart-title header-medium')
+                .attr('x', (_,i) => chartXScale(i + 1) + chartXScale.bandwidth() / 2)
+                .attr('dominant-baseline', 'middle')
+                .attr('text-anchor', 'middle')
+                .attr('fill', d => d3.color(colors(d)).darker(1))
+                .html(d => `${d} set`)
+        );
+
+    let setGroup = chartsG.selectAll('.barchart-set')
         .data(sets, k => k)
         .join(
             enter => enter.append('g')
                 .attr('class', 'barchart-set')
-                .attr('transform', (_,i) => `translate(${chartXScale(i+1)})`)
+                .attr('transform', (_, i) => `translate(${chartXScale(i + 1)})`)
         );
 
-    group.each((p,j,nodes) => {
+    setGroup.each((p, j, nodes) => {
         d3.select(nodes[j])
-        .selectAll('.bar')
-        .data(classes, k => k)
-        .join(
-            enter => enter.append('rect')
-                .attr('class', 'bar')
-                .attr('x', d => dataclassXScale(d))
-                .attr('y', (d,i) => dataclassYScale(sampleSetsCounter[j][i]))
-                .attr('width', dataclassXScale.bandwidth())
-                .attr('height', (d,i) => dataclassYScale(0) - dataclassYScale(sampleSetsCounter[j][i]))
-                .attr('fill', d => classColors(d))
-                .attr('opacity', 0.5),
-            update => update.transition()
-                .duration(500)
-                .attr('y', (_,i) => dataclassYScale(sampleSetsCounter[j][i]))
-                .attr('height', (_,i) => dataclassYScale(0) - dataclassYScale(sampleSetsCounter[j][i]))
-        )
+            .selectAll('.bar')
+            .data(classes, k => k)
+            .join(
+                enter => enter.append('rect')
+                    .attr('class', 'bar')
+                    .attr('x', d => dataclassXScale(d))
+                    .attr('y', (_, i) => dataclassYScale(sampleSetsCounter[j][i]))
+                    .attr('width', dataclassXScale.bandwidth())
+                    .attr('height', (_, i) => dataclassYScale(0) - dataclassYScale(sampleSetsCounter[j][i]))
+                    .attr('fill', d => classColors(d))
+                    .attr('opacity', 0.5),
+                update => update.transition()
+                    .duration(1000)
+                    .attr('y', (_, i) => dataclassYScale(sampleSetsCounter[j][i]))
+                    .attr('height', (_, i) => dataclassYScale(0) - dataclassYScale(sampleSetsCounter[j][i]))
+            )
     });
-}
+
+    setGroup.selectAll('.x-axis')
+        .data([0])
+        .join(
+            enter => enter.append('g')
+            .attr('class', 'x-axis')
+            .attr("transform", "translate(0," + barchartHeight + ")")
+            .call(d3.axisBottom(dataclassXScale)
+                .tickFormat(d => `Class ${d}`)
+            )
+            .selectAll("text")
+            .attr("transform", "translate(-10,0)rotate(-45)")
+            .style("text-anchor", "end")
+        );
+
+    setGroup.selectAll('.y-axis')
+        .data([0])
+        .join(
+            enter => enter.append("g")
+            .attr('class', 'y-axis')
+            .call(d3.axisLeft(dataclassYScale)
+                .ticks(6)
+            )
+        );
+
+    setGroup.selectAll('.y-axis-label')
+        .data([0])
+        .join(
+            enter => enter.append('text')
+                .attr('class', 'y-axis-label header-small')
+                .attr('x', -30)
+                .attr('y', dataclassYScale.range()[0] / 2)
+                .attr("transform", `rotate(${-90} ${-30} ${dataclassYScale.range()[0] / 2})`)
+                .attr('dominant-baseline', 'middle')
+                .attr('text-anchor', 'middle')
+                .attr('fill', 'gray')
+                .html('No. of samples')
+        )
+    }
 
 
 drawClassBarchart()
-
-
-
-
-
-
-
 
 let clearSamples = function() {
     samples = []
@@ -278,7 +371,7 @@ let updateSamples = function(incCounter=false) {
         .duration(1000)
         .attr('cx', d => d.set ? dataScale(d.sortIdx) + setXOffsetScale(d.set) : dataScale(d.sortIdx) + setXOffsetScale(d.set) + datasetBarMargin.left)
         .attr('cy', d => d.set ? setRectY + rectHeight / 2 : rectHeight / 2 + datasetTextHeight)
-        .on('end', d => {
+        .on('start', d => {
             if(incCounter) {
                 d.set === 'train' ? sampleSetsCounter[0][d.dataclass]++ : sampleSetsCounter[1][d.dataclass]++;
                 drawClassBarchart();
@@ -294,7 +387,7 @@ let updateSamplesDelay = function(incCounter=false) {
         .duration(1000)
         .attr('cx', d => d.set ? dataScale(d.sortIdx) + setXOffsetScale(d.set) : dataScale(d.sortIdx) + setXOffsetScale(d.set) + datasetBarMargin.left)
         .attr('cy', d => d.set ? setRectY + rectHeight / 2 : rectHeight / 2 + datasetTextHeight)
-        .on('end', d => {
+        .on('start', d => {
             if(incCounter) {
                 d.set === 'train' ? sampleSetsCounter[0][d.dataclass]++ : sampleSetsCounter[1][d.dataclass]++;
                 drawClassBarchart();
@@ -323,8 +416,7 @@ initSamples()
 // drawSampleShadows()
 
 // const barHeight = 50;
-
-const labelMargin = {top: 0, right: 0, bottom: 0, left: 0};
+// const labelMargin = {top: 0, right: 0, bottom: 0, left: 0};
 
 const indexSplit = function() {
     samples.slice(0, splitFiles[0]).forEach((e, i) => {e.set = 'train'; e.sortIdx = i});
@@ -392,23 +484,23 @@ d3.select('#split-btn').on('click', () => {
 });
 
 d3.select('#sort-btn').on('click', () => {
-    if(!samples[0].set) {
-        samples.sort((a, b) => a.dataclass - b.dataclass);
+    resetSamplesAndHistograms();
 
-        samples.forEach((s,i) => s.sortIdx = i);
+    samples.sort((a, b) => a.dataclass - b.dataclass);
 
-        updateSamples();
-    }
+    samples.forEach((s, i) => s.sortIdx = i);
+
+    updateSamples();
 });
 
 d3.select('#shuffle-btn').on('click', () => {
-    if(!samples[0].set) {
-        shuffleSamples(samples);
+    resetSamplesAndHistograms();
 
-        samples.forEach((s,i) => s.sortIdx = i);
+    shuffleSamples(samples);
 
-        updateSamples();
-    }
+    samples.forEach((s, i) => s.sortIdx = i);
+
+    updateSamples();
 });
 
 d3.select('#reset-btn').on('click', () => {
