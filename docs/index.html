@@ -79,7 +79,8 @@
 
 <body>
   <!-- <distill-header></distill-header> -->
-  <d-front-matter>
+  <distill-header></distill-header>
+  <d-front-matter id="top">
     <script id='distill-front-matter' type="text/json">{
     "title": "Echoes from the DataRealm",
     "description": "Although \" extremely useful for visualizing high-dimensional data, t-SNE plots can sometimes be mysterious or misleading.",
@@ -88,17 +89,17 @@
       {
         "author":"Lalith Sharan",
         "authorURL":"",
-        "affiliations": [{"name": "AICM, Heidelberg", "url": "https://www.klinikum.uni-heidelberg.de/chirurgische-klinik-zentrum/herzchirurgie/forschung/ag-artificial-intelligence-in-cardiovascular-medicine"}]
+        "affiliations": [{"name": "UKHD, Heidelberg", "url": "https://www.klinikum.uni-heidelberg.de/chirurgische-klinik-zentrum/herzchirurgie/forschung/ag-artificial-intelligence-in-cardiovascular-medicine"}]
       },
       {
         "author":"Georgii Kostiuchik",
         "authorURL":"",
-        "affiliations": [{"name": "AICM, Heidelberg", "url": "https://www.klinikum.uni-heidelberg.de/chirurgische-klinik-zentrum/herzchirurgie/forschung/ag-artificial-intelligence-in-cardiovascular-medicine"}]
+        "affiliations": [{"name": "UKHD, Heidelberg", "url": "https://www.klinikum.uni-heidelberg.de/chirurgische-klinik-zentrum/herzchirurgie/forschung/ag-artificial-intelligence-in-cardiovascular-medicine"}]
        },
       {
         "author":"Sandy Engelhardt",
         "authorURL":"",
-        "affiliations": [{"name": "AICM, Heidelberg", "url": "https://www.klinikum.uni-heidelberg.de/chirurgische-klinik-zentrum/herzchirurgie/forschung/ag-artificial-intelligence-in-cardiovascular-medicine"}]
+        "affiliations": [{"name": "UKHD, Heidelberg", "url": "https://www.klinikum.uni-heidelberg.de/chirurgische-klinik-zentrum/herzchirurgie/forschung/ag-artificial-intelligence-in-cardiovascular-medicine"}]
          }
     ],
     "katex": {
@@ -108,14 +109,21 @@
     }
   }</script>
   </d-front-matter>
+
   <d-title>
-    <p>An expedition across the magical and treacherous paths of data exploration</p>
+    <p>An expedition across the magical and treacherous paths of data exploration </p>
+
   </d-title>
+
   <d-byline></d-byline>
+
+
   <d-article>
-    <a class="marker" href="#section_1" id="section-1"><span>Chapter 1</span></a>
-    <a class="marker" href="#section_2" id="section-2"><span>Chapter 2</span></a>
-      <p> It was on a warm and breezy Friday afternoon that Luca, having indulged in a heavy lunch, found himself gazing at a determined squirrel
+      <a class="marker" href="#section-1" id="section1"><span>1: Data quality</span></a>
+      <a class="marker" href="#section-2" id="section2"><span>2: Data splits</span></a>
+      <a class="marker" href="#section-3" id="section3"><span>3: Data shifts</span></a>
+      <p> It was on a warm and breezy Friday afternoon that Luca, having indulged in a heavy lunch, found himself
+          gazing at a determined squirrel
         that was perched on his window sill. The squirrel, clutching a stubborn nutshell with its tiny paws, executed an array of maneuvers with
         intense focus. It began by turning the nut around, testing its angles and seams, while steadily biting and gnawing with determination.
         Luca couldn't help draw a parallel to the time he had spent poring over lines of code, navigating the maze of his dataset with little success.
@@ -124,10 +132,14 @@
           <i> it just doesn't generalize </i>. At that very moment, a gentle breeze swept in and comforted him. Gradually, he sensed his thoughts slowing down,
         his focus dwindling and his eyelids growing heavier...when an unexpected touch on his shoulder jolted him. </p>
 
+
+
       <q> Come with me. Now. There's no time to explain </q>
       <q> Wh..What? </q>
 
-    <h3 id="section_1">Chapter 1: Exploration</h3>
+
+    <h3 id="section-1">Chapter 1: Explorers</h3>
+      <a class="marker" href="#top" id="top1"><span>Top</span></a>
       <p> And so it was, that Luca now found himself in a strange and peculiar land. What he saw seemed both familiar and foreign to him, as he stared in disbelief
     at the boundless expanse that lay in front of him. Suddenly, Luca's thoughts turned to the unfinished work, his model that was probably training, the cluttered desk and the creaky chair that he
     left behind, all of which seemed like a world far far away from the one he was now standing in.
@@ -135,6 +147,12 @@
     him here. As he glanced to his left in her direction, he had a feeling that she could perceive his confusion. As if in response, she proceeded to talk,
     'Greetings to the land of DataRealm, where all data lives. Here, information flows like rivers and mountains of code rise into the sky.
           This is a realm of creation and discovery, where the human spirit and the digital domain converge to form a connected whole.' </p>
+
+      <figure>
+      <img src="assets/datarealm_2.png">
+      <figcaption style="text-align: center;">Image generated by Sandy Engelhardt using <a
+              href="https://www.midjourney.com/home/">Midjourney</a></figcaption>
+      </figure>
 
       <p> As his eyes swept across the landscape, it slowly dawned upon him, as he faintly noticed gigantic crystalline structures in a distance that stood tall,
 intricate with complex algorithms and databases. Interlinked nodes and circuits sprawled out like arteries, each a nexus of complex information, thoughts, and ideas.
@@ -147,6 +165,9 @@ Luca was just processing all that he had heard, wondering if this was all an ela
 These towers stand in memoriam of all the data that have been misused, neglected, tortured, and sacrificed to fit a narrative. Luca, remember what they stand for, that you shall not repeat
 the same mistakes. The first spire to your right, stands in the name of <i>Data Integrity</i>. It teaches us to always explore and understand your data before plunging into a task.
     Data has many insights that can be unearthed only through earnest poking and prying, and then lingering to listen to what it has to say. </p>
+
+      <aside>Data integrity: Is your data complete? Have you explored and visualised your data? Have you identified
+    outliers? Is your data diversity, representative?</aside>
 
 <p> 'How do I do this?' asked Luca feverishly. She smiled and proceeded, 'Your first step is to perform an exploratory data analysis. Here, you need to explore the distribution of your dataset, and
 pause to think if it agrees with the underlying assumptions made about the data that you have observed. In more concrete terms, first understand the data distribution by plotting histograms, and looking for
@@ -171,15 +192,18 @@ risk of pneumonia, they found that asthma patients showed a lower risk of pneumo
       abcd
     </aside>
 
+      <aside>Data relevance: Does the data you are using for the task satisfy the assumptions of your model of
+          the world? Are there possible confounders?</aside>
+
     <figure class="l-page">
-      <img src="nejmon1211064_f1.jpeg">
+      <img src="assets/nejmon1211064_f1.jpeg">
       <figcaption style="text-align: center;">Correlation between Countries' Annual Per Capita Chocolate Consumption and the Number of Nobel
         Laureates per 10 Million Population <d-cite key="chocolate"></d-cite>.</figcaption>
     </figure>
 <p> And finally, remember, splitting your data can also end up introducing spurious correlations in your dataset. Remember the time when this work, which presented state-of-the-art performance that was better
 than human radiologists in detecting pneumonia from chest X-rays <d-cite key="rajpurkar_chexnet_2017"></d-cite>. This
     work invited attention and critique regarding the data splits used <d-cite
-            key="botz_few_2017,laurenoakdenrayner_chexnet_2018,"></d-cite>. Now I am not questioning the validity
+            key="botz_few_2017,laurenoakdenrayner_chexnet_2018"></d-cite>. Now I am not questioning the validity
     of this
     work, but rather pointing your attention
 to the importance of explicitly outlining your data splits in the pipeline to the extent possible. It is not trivial, as we will
@@ -188,7 +212,10 @@ it, and not let it fall under the hands of bad actors. This means, ensuring anon
 vulnerabilities. One must indeed to check the scope to which the data is exposed, and if necessary shield sensitive data from parts of your pipeline. Some may even turn to differential privacy or federated learning in
     this regard. </p>
 
-<h3 href="#section_2">Chapter 2: A balancing act</h3>
+            <aside>Data security: Verify the scope to which the data is exposed.</aside>
+
+<h3 id="section-2">Chapter 2: A balancing act</h3>
+      <a class="marker" href="#top" id="top2"><span>Top</span></a>
       <p> The two travellers then began their journey to <i> Archive of wisdom </i> at the heart of the realm. Luca's head was brimming
 with all the information he had just received, while his companion, who now looked focused on her immediate surroundings,
 turned to him and started in an anxious tone, 'Dear Luca, a little while ago I told you about data splitting and how it could introduce
@@ -199,6 +226,8 @@ place for these people in the heart of data realm. Splitting your data randomly 
 to fall under both the training and validation set or across different folds. If not ensured during the splitting process, this mode of failure
 is very difficult to detect at later stages of the pipeline, and you may just be convinced that your model performs better. It is a good idea to use sklearn functions
     to ensure there is no data leakage while splitting your data. </p>
+
+      <aside>Data splitting is non-trivial and may result in data leakage.</aside>
 
 <d-figure class="l-page" style="display: flex">
   <div style="flex: 0 0 80%;">
@@ -269,6 +298,20 @@ This is called stratified sampling, and can for example be done using the <code>
 Otherwise, this will skew your results. Keep in mind that the distribution or the shape of the different classes in your folds must essentially reflect
     that of your dataset. Similarly, if your data has hierarchies, they must also be reflected in your different splits. </p>
 
+      <aside>The shape of the class distributions in your split must reflect that in the source dataset.</aside>
+
+      <p> Let us take a more concrete use-case of <i>surgical workflow analysis</i>, where multiple aspects of a
+          surgery come into the pictures, such as surgical phases, and the transitions between them, the occurrence and
+          co-occurrences of different surgical instruments, and the duration or difficulty of a surgery. Depending on
+          the objectives of the task, there are different ways of splitting the data to reflect the source data
+          distribution. Here, stratification can also be applied on multiple levels, such as to group the surgical
+          phases as well as the surgical instruments. Here, visualisation tools such as EndoVis-ML <d-cite
+                  key="kostiuchik_surgical_2023"></d-cite> help in interactively exploring the
+          splits of the data based on different levels of grouping and to ensure no unrepresented classes.
+      </p>
+
+      <aside>The Endovis-Ml helps visualise data splits for surgical workflow analysis</aside>
+
 <p> Luca, you have been brave in your journey into the realm of data. You must have also noticed something by now. In here, like in life, some data
 is abundant while some are rare and hard to come by. Take for example the case of rare diseases, say a tumor using
 MRI images. The number of images that contain a tumor may be very limited, which may lead your model to be biased towards the
@@ -277,10 +320,13 @@ and missed detections as a result. There are a few ways to approach this <d-cite
     minority class by
 generating synthetic data samples. Data augmentation is one method to achieve this. Techniques like SMOTE (Synthetic minority over-sampling
 technique) <d-cite key="chawla_smote_2002"></d-cite> creates new synthetic instances by interpolating between existing minority class instances. Alternatively,
-under-sampling the majority class helps balance the classes and reduce risk of overfitting. The downside it that you potentially lose information
+undersampling the majority class helps balance the classes and reduce risk of overfitting. The downside it that you potentially lose information
 that you could learn from. </p>
 
-<h3>Chapter 3: Shifting realities</h3>
+      <aside>Oversampling and undersampling are two techniques to deal with data imbalance and rare cases.</aside>
+
+<h3 id="section-3">Chapter 3: Shifting realities</h3>
+<a class="marker" href="#top" id="top3"><span>Top</span></a>
 <p> Luca was now getting weary from his long and winding journey, yet he remained resolute to see to its conclusion.
 His initial confusion had given way to gratitude and deep appreciation for the wealth of knowledge he was acquiring.
 Often, life introduces unexpected benefactors who end up invaluably changing your life for the better.
@@ -297,7 +343,9 @@ achieved reasonably good accuracy, probably even state of the art. You now want 
 the performance of the model. But you notice that the model does not perform comparably, in the wild. This is often due to data shifts that occur,
 as a result of the train and test data coming from different distributions. But you need to understand that this is not necessarily because
 you have a small sample of data. While the relationship between the input variables and the targets remain the same, data shifts may be
-    caused as a result of choices made while acquiring your data, also called _sampling bias_. </p>
+    caused as a result of choices made while acquiring your data, also called <i> sampling bias </i>. </p>
+
+      <aside>Model performance tends to degrade over time due to the temporal nature of data and model shifts.</aside>
 
 <p> For example, assume you have the task of predicting
 tumor volume from features learnt from CT scans <d-cite key="dockes_preventing_2021"></d-cite>. The size of the tumor (X) is not only influenced by the image features (Y) but also a contrast agent (M).
@@ -312,8 +360,11 @@ Take for example, a model that predicts patient mortality based on pneumonia <d-
 pneumonia. Often a combination of both shifts may be observed in the real world. In the same example for instance, a model trained on
     pre-covid vaccination data may overestimate risk for a vaccinated population. </p>
 
+      <aside>Data shifts occur when the joint distribution or prevalence of the data changes while the relationship
+          between the input and output variables remains the same.</aside>
+
           <figure>
-      <img src="giab055fig3.jpg">
+      <img src="assets/giab055fig3.jpg">
       <figcaption style="text-align: center;">Sample selection bias: three examples. On the right are graphs giving conditional independence relations <d-cite key="pearl_causal_2016"></d-cite>.
           Y is the lesion volume to be predicted (i.e., the output). M are the imaging parameters, e.g., contrast agent dosage. X is the image,
           and depends both on Y and M (in this toy example X is computed as X:= Y+M, where ϵ is additive noise). S
@@ -336,10 +387,18 @@ cluttered desk. His model had now finished training.
 With a thoughtful grin, Luca outside to find his old friend, the squirrel, still perched on the window sill.
     Having cracked open the shell, he was now savouring the treasures of his labour with a glint in his eye. </p>
 
+      <figure>
+      <img src="assets/squirrel.png">
+      <figcaption style="text-align: center;">Image generated by Sandy Engelhardt using <a href="https://www.midjourney.com/home/">Midjourney</a></figcaption>
+    </figure>
+
+      <aside>This is the sign you were looking for :)</aside>
+
   </d-article>
 
   <d-appendix>
-
+    <h3>Note</h3>
+      <p>This article is a submission to the MICCAI Educational Challenge 2023</p>
     <d-bibliography src="bibliography.bib"></d-bibliography>
   </d-appendix>
 
