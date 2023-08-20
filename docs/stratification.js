@@ -1,6 +1,6 @@
 import { generateSamples, shuffleSamples, splitToFiles } from "./util.js";
 
-const margin = {top: 20, right: 50, bottom: 0, left: 10};
+const margin = {top: 0, right: 10, bottom: 0, left: 10};
 const svgHeight = 400;
 const svgWidth = d3.select('#stratification').node().getBoundingClientRect().width;
 
@@ -14,7 +14,7 @@ let splitFiles = splitToFiles(split, samples.length)
 
 const circleRadius = 4;
 const rectHeight = 40;
-let setRectY = 80;
+let setRectY = 120;
 
 const g = d3.select('#stratification')
     .attr('height', svgHeight)
@@ -40,19 +40,66 @@ let setXOffsetScale = d3.scaleOrdinal()
         .domain(sets)
         setXOffsetScale.range([0, (dataScale(splitFiles[0] - 1) || 0) + datasetBarMargin.right + datasetBarMargin.left]);
 
+
+const datasetTextHeight = 30;
+
+g.append('text')
+    .attr('class', 'header')
+    .attr('x', (svgWidth - margin.left - margin.right) / 2)
+    .attr('y', datasetTextHeight / 2)
+    .attr('dominant-baseline', 'middle')
+    .attr('text-anchor', 'middle')
+    .attr('fill', 'gray')
+    .html(`Dataset (${samples.length} samples)`);
+
 g.append('rect')
-    .attr('transform', `translate(${datasetBarMargin.left}, ${datasetBarMargin.top})`)
+    .attr('transform', `translate(${datasetBarMargin.left}, ${datasetBarMargin.top + datasetTextHeight})`)
     .attr('x', 0)
     .attr('width', svgWidth - margin.right - margin.left - datasetBarMargin.right - datasetBarMargin.left)
     .attr('y', 0)
     .attr('height', rectHeight)
     .attr('rx', 5)
     .attr('fill', 'lightgray')
-    .attr('opacity', 0.2);
+    .attr('fill-opacity', 0.2)
+    .attr('stroke', 'lightgray')
+    .attr('stroke-width', 1)
+    .attr("stroke-dasharray", "3 1")
+    ;
 
 let setG = g.append('g')
     .attr('class', 'set-g')
     .attr('transform', `translate(0, ${setRectY})`);
+
+let defs = g.append('defs');
+
+defs.append('marker')
+    .attr('id', 'arrowhead')
+    .attr('orient', 'auto')
+    .attr('markerWidth', 100)
+    .attr('markerHeight', 100)
+    .attr('refX', 0)
+    .attr('refY', 3)
+    .append('path')
+    .attr('d', 'M0,0 V6 L4,3 Z')
+    .attr('fill', 'lightgray')
+
+let arrowPos = [60, margin.top + datasetTextHeight + rectHeight + 10];
+
+g.append('path')
+    .attr('d', 'M15,0  L0,20')
+    .attr('transform', `translate(${arrowPos[0]},${arrowPos[1]})`)
+    .attr('stroke-width', 3)
+    .attr('stroke', 'lightgray')
+    .attr('stroke-opacity', 1)
+    .attr('marker-end', 'url(#arrowhead)')
+
+g.append('path')
+    .attr('d', 'M0,0  L15,20')
+    .attr('transform', `translate(${svgWidth - margin.right - margin.left - arrowPos[0] - 15},${arrowPos[1]})`)
+    .attr('stroke-width', 3)
+    .attr('stroke', 'lightgray')
+    .attr('stroke-opacity', 1)
+    .attr('marker-end', 'url(#arrowhead)')
 
 let drawSetRects = function() {
     setG.selectAll('.set-rect')
@@ -64,7 +111,10 @@ let drawSetRects = function() {
                 .attr('height', rectHeight)
                 .attr('rx', 5)
                 .attr('fill', d => colors(d))
-                .attr('opacity', 0.2)
+                .attr('fill-opacity', 0.2)
+                .attr('stroke', d => colors(d))
+                .attr('stroke-width', 1)
+                .attr("stroke-dasharray", "3 1")
                 .attr('x', d => setXOffsetScale(d))
                 .attr('width', (_, i) => splitFiles[0] === 0 ? 0 : dataScale(splitFiles[i] - 1) + dataScale.step()),
             update => update.transition()
@@ -72,6 +122,31 @@ let drawSetRects = function() {
                 .attr('x', d => setXOffsetScale(d))
                 .attr('width', (_, i) => splitFiles[0] === 0 ? 0 : dataScale(splitFiles[i] - 1) + dataScale.step()),
         )
+
+    setG.selectAll('.set-label')
+        .data(sets)
+        .join(
+            enter => enter.append('text')
+                .attr('class', 'set-label header')
+                .attr('y', rectHeight + datasetTextHeight / 2)
+                .attr('x', (d,i) => {
+                    let x = setXOffsetScale(d);
+                    let width = splitFiles[0] === 0 ? 0 : dataScale(splitFiles[i] - 1) + dataScale.step();
+                    return x + width / 2;
+                })
+                .attr('dominant-baseline', 'middle')
+                .attr('text-anchor', 'middle')
+                .attr('fill', d => d3.color(colors(d)).darker(1))
+                .html(d => `${d} set`),
+            update => update.transition()
+                .duration(1000)
+                .attr('x', (d,i) => {
+                    let x = setXOffsetScale(d);
+                    let width = splitFiles[0] === 0 ? 0 : dataScale(splitFiles[i] - 1) + dataScale.step();
+                    return x + width / 2;
+                })
+        )
+        
 }
 
 drawSetRects();
@@ -108,7 +183,7 @@ let initSamples = function() {
         .attr('r', circleRadius)
         .attr('fill', d => classColors(d.dataclass))
         .attr('cx', d => dataScale(d.sample) + datasetBarMargin.left)
-        .attr('cy', rectHeight / 2)
+        .attr('cy', rectHeight / 2 + datasetTextHeight)
 }
 
 let updateSamples = function() {
@@ -116,7 +191,7 @@ let updateSamples = function() {
         .transition()
         .duration(1000)
         .attr('cx', d => d.set ? dataScale(d.sortIdx) + setXOffsetScale(d.set) : dataScale(d.sortIdx) + setXOffsetScale(d.set) + datasetBarMargin.left)
-        .attr('cy', d => d.set ? setRectY + rectHeight / 2 : rectHeight / 2)
+        .attr('cy', d => d.set ? setRectY + rectHeight / 2 : rectHeight / 2 + datasetTextHeight)
         .end()
 }
 
@@ -126,7 +201,7 @@ let updateSamplesDelay = function() {
         .delay(d => 500 * d.displayIdx)
         .duration(1000)
         .attr('cx', d => d.set ? dataScale(d.sortIdx) + setXOffsetScale(d.set) : dataScale(d.sortIdx) + setXOffsetScale(d.set) + datasetBarMargin.left)
-        .attr('cy', d => d.set ? setRectY + rectHeight / 2 : rectHeight / 2)
+        .attr('cy', d => d.set ? setRectY + rectHeight / 2 : rectHeight / 2 + datasetTextHeight)
         .end()
 }
 
@@ -183,16 +258,16 @@ const stratifiedsplit = async function() {
 
     updateActualSetSize(split, classCounter);
     drawSetRects();
-    updateSamplesDelay();
+    await updateSamplesDelay();
 
-    // sets.forEach(set => {
-    //     let setSamples = samples.filter(s => s.set === set);
-    //     shuffleSamples(setSamples);
+    sets.forEach(set => {
+        let setSamples = samples.filter(s => s.set === set);
+        shuffleSamples(setSamples);
 
-    //     setSamples.forEach((s,i) => s.sortIdx = i);
-    // });
+        setSamples.forEach((s,i) => s.sortIdx = i);
+    });
 
-    // updateSamples();
+    updateSamples();
 }
 
 d3.select('#split-btn').on('click', () => {
