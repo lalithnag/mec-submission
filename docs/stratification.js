@@ -16,6 +16,8 @@ const circleRadius = 4;
 const rectHeight = 40;
 let setRectY = 120;
 
+let sampleSetsCounter = sets.map(_ => classes.map(c => 0));
+
 const g = d3.select('#stratification')
     .attr('height', svgHeight)
     .append("g")
@@ -151,6 +153,90 @@ let drawSetRects = function() {
 
 drawSetRects();
 
+// barchart area
+let barchartG = g.append('g')
+    .attr('class', 'barchart-g')
+    .attr('transform', `translate(0, ${setRectY + rectHeight + datasetTextHeight})`);
+
+let chartXScale = d3.scaleBand()
+    .domain(d3.range(3))
+    .range([0, svgWidth - margin.right - margin.left])
+    .padding(0.5);
+
+let dataclassXScale = d3.scaleBand()
+    .domain(classes)
+    .range([0, chartXScale.bandwidth()]);
+
+const barchartHeight = 100;
+
+let dataclassYScale = d3.scaleLinear()
+    .domain([0, d3.max(nrSamples)])
+    .range([barchartHeight, 0]);
+
+let classData = d3.rollup(samples, v => v.length, k => k.dataclass);
+
+barchartG.append('g')
+    .attr('class', 'barchart')
+    .attr('transform', `translate(${chartXScale(0)})`)
+    .selectAll('bar')
+    .data(classes)
+    .join(
+        enter => enter.append('rect')
+            .attr('class', '.bar')
+            .attr('x', d => dataclassXScale(d))
+            .attr('y', d => dataclassYScale(classData.get(d)))
+            .attr('width', dataclassXScale.bandwidth())
+            .attr('height', d => dataclassYScale(0) - dataclassYScale(classData.get(d)) )
+            .attr('fill', d => classColors(d))
+            .attr('opacity', 0.5)
+    )
+
+
+let drawClassBarchart = function() {
+    // let classDataSets = [
+    //     d3.rollup(samples.filter(s => s.dataclass === 'train'), v => v.length, k => k.dataclass),
+    //     d3.rollup(samples.filter(s => s.dataclass === 'test'), v => v.length, k => k.dataclass)
+    // ];
+
+    let group = barchartG.selectAll('.barchart-set')
+        .data(sets, k => k)
+        .join(
+            enter => enter.append('g')
+                .attr('class', 'barchart-set')
+                .attr('transform', (_,i) => `translate(${chartXScale(i+1)})`)
+        );
+
+    group.each((p,j,nodes) => {
+        d3.select(nodes[j])
+        .selectAll('.bar')
+        .data(classes, k => k)
+        .join(
+            enter => enter.append('rect')
+                .attr('class', 'bar')
+                .attr('x', d => dataclassXScale(d))
+                .attr('y', (d,i) => dataclassYScale(sampleSetsCounter[j][i]))
+                .attr('width', dataclassXScale.bandwidth())
+                .attr('height', (d,i) => dataclassYScale(0) - dataclassYScale(sampleSetsCounter[j][i]))
+                .attr('fill', d => classColors(d))
+                .attr('opacity', 0.5),
+            update => update.transition()
+                .duration(500)
+                .attr('y', (_,i) => dataclassYScale(sampleSetsCounter[j][i]))
+                .attr('height', (_,i) => dataclassYScale(0) - dataclassYScale(sampleSetsCounter[j][i]))
+        )
+    });
+}
+
+
+drawClassBarchart()
+
+
+
+
+
+
+
+
 let clearSamples = function() {
     samples = []
     g.selectAll('.sample').remove();
@@ -186,37 +272,57 @@ let initSamples = function() {
         .attr('cy', rectHeight / 2 + datasetTextHeight)
 }
 
-let updateSamples = function() {
+let updateSamples = function(incCounter=false) {
     return g.selectAll('.sample')
         .transition()
         .duration(1000)
         .attr('cx', d => d.set ? dataScale(d.sortIdx) + setXOffsetScale(d.set) : dataScale(d.sortIdx) + setXOffsetScale(d.set) + datasetBarMargin.left)
         .attr('cy', d => d.set ? setRectY + rectHeight / 2 : rectHeight / 2 + datasetTextHeight)
+        .on('end', d => {
+            if(incCounter) {
+                d.set === 'train' ? sampleSetsCounter[0][d.dataclass]++ : sampleSetsCounter[1][d.dataclass]++;
+                drawClassBarchart();
+            }
+        })
         .end()
 }
 
-let updateSamplesDelay = function() {
+let updateSamplesDelay = function(incCounter=false) {
     return g.selectAll('.sample')
         .transition()
-        .delay(d => 500 * d.displayIdx)
+        .delay(d => 1000 * d.displayIdx)
         .duration(1000)
         .attr('cx', d => d.set ? dataScale(d.sortIdx) + setXOffsetScale(d.set) : dataScale(d.sortIdx) + setXOffsetScale(d.set) + datasetBarMargin.left)
         .attr('cy', d => d.set ? setRectY + rectHeight / 2 : rectHeight / 2 + datasetTextHeight)
+        .on('end', d => {
+            if(incCounter) {
+                d.set === 'train' ? sampleSetsCounter[0][d.dataclass]++ : sampleSetsCounter[1][d.dataclass]++;
+                drawClassBarchart();
+            }
+        })
         .end()
 }
 
-let resetSamples = function() {
+let resetSamplesAndHistograms = function() {
     if(samples[0].set) {
+        resetBarcharts();
+        drawClassBarchart();
+
         clearSamples();
         initSampleData();
         initSamples();
     }
 }
 
+let resetBarcharts = function() {
+    sampleSetsCounter = sets.map(_ => classes.map(c => 0));
+    d3.selectAll('.barchart-set').selectAll('.bar').remove();
+}
+
 initSamples()
 // drawSampleShadows()
 
-const barHeight = 50;
+// const barHeight = 50;
 
 const labelMargin = {top: 0, right: 0, bottom: 0, left: 0};
 
@@ -224,7 +330,7 @@ const indexSplit = function() {
     samples.slice(0, splitFiles[0]).forEach((e, i) => {e.set = 'train'; e.sortIdx = i});
     samples.slice(splitFiles[0]).forEach((e,i) => {e.set = 'test'; e.sortIdx = i});
 
-    updateSamples();
+    updateSamples(true);
 }
 
 const shuffleSplit = async function() {
@@ -237,9 +343,8 @@ const shuffleSplit = async function() {
     samples.slice(0, splitFiles[0]).forEach((e, i) => {e.set = 'train'; e.sortIdx = i});
     samples.slice(splitFiles[0]).forEach((e,i) => {e.set = 'test'; e.sortIdx = i});
 
-    updateSamples();
+    updateSamples(true);
 }
-
 
 const stratifiedsplit = async function() {
     let classCounter = [0,0];
@@ -258,7 +363,7 @@ const stratifiedsplit = async function() {
 
     updateActualSetSize(split, classCounter);
     drawSetRects();
-    await updateSamplesDelay();
+    await updateSamplesDelay(true);
 
     sets.forEach(set => {
         let setSamples = samples.filter(s => s.set === set);
@@ -273,7 +378,7 @@ const stratifiedsplit = async function() {
 d3.select('#split-btn').on('click', () => {
     let splitMode = d3.select('input[name="option"]:checked').property("value");
     
-    resetSamples();
+    resetSamplesAndHistograms();
     updateActualSetSize(split);
     drawSetRects();
 
@@ -307,7 +412,7 @@ d3.select('#shuffle-btn').on('click', () => {
 });
 
 d3.select('#reset-btn').on('click', () => {
-    resetSamples();
+    resetSamplesAndHistograms();
 });
 
 let updateActualSetSize = function(newSplit, newSplitfiles) {
@@ -322,7 +427,7 @@ d3.select("#ratio-slider").on("input", (e) => {
     d3.select('#train-ratio').html(trainTestRatio);
 
     // update data
-    resetSamples();
+    resetSamplesAndHistograms();
     updateActualSetSize([trainTestRatio / 100, 1 - (trainTestRatio / 100)]);
     drawSetRects();
 });
