@@ -47,6 +47,54 @@ let setXOffsetScale = d3.scaleOrdinal()
 
 const datasetTextHeight = 30;
 
+d3.select('#class-legend')
+    .selectAll('.classes')
+    .data(classes)
+    .join(
+        enter => {
+            let div = enter.append('div')
+                .attr('class', 'classes')
+                .style('display', 'inline-block')
+            
+            div.append('span')
+                .style('display', 'inline-block')
+                .style('width', '10px')
+                .style('height', '10px')
+                .style('border-radius', '50%')
+                .style('background-color', d => classColors(d));
+            
+            div.append('div')
+                .style('display', 'inline-block')
+                .style('margin-left', '5px')
+                .html(d => `Class ${d}`);
+
+            return div;
+        });
+
+d3.select('#group-legend')
+    .selectAll('.groups')
+    .data(d3.range(2))
+    .join(
+        enter => {
+            let div = enter.append('div')
+                .attr('class', 'classes')
+                .style('display', 'inline-block')
+            
+            div.append('span')
+                .style('display', 'inline-block')
+                .style('width', '10px')
+                .style('height', '10px')
+                .style('border-radius', (d) => d === 0 ? '50%': '0%')
+                .style('background-color', 'gray');
+            
+            div.append('div')
+                .style('display', 'inline-block')
+                .style('margin-left', '5px')
+                .html(d => `Group ${d}`);
+
+            return div;
+        });
+
 g.append('text')
     .attr('class', 'header')
     .attr('x', (svgWidth - margin.left - margin.right) / 2)
@@ -331,12 +379,12 @@ let drawClassBarchart = function() {
 drawClassBarchart()
 
 let clearSamples = function() {
-    samples = []
     g.selectAll('.sample').remove();
 }
 
-let initSampleData = function() {
-    samples = generateSamples(nrSamples);
+let resetSampleData = function() {
+    samples.sort((a,b) => a.sample - b.sample);
+    samples.forEach((s,i) => {s.set = null; s.sortIdx = i; s.displayIdx = i});
 }
 
 let drawSampleShadows = function() {
@@ -408,7 +456,7 @@ let updateSamples = function(incCounter=false) {
 }
 
 let updateSamplesDelay = function(incCounter=false) {
-    return g.selectAll('.sample')
+    let circleSelection = g.selectAll('.sample-circle')
         .transition()
         .delay(d => 1000 * d.displayIdx)
         .duration(1000)
@@ -420,7 +468,23 @@ let updateSamplesDelay = function(incCounter=false) {
                 drawClassBarchart();
             }
         })
-        .end()
+        .end();
+
+    let rectSelection = g.selectAll('.sample-rect')
+        .transition()
+        .delay(d => 1000 * d.displayIdx)
+        .duration(1000)
+        .attr('x', d => d.set ? dataScale(d.sortIdx) + setXOffsetScale(d.set) : dataScale(d.sortIdx) + setXOffsetScale(d.set) + datasetBarMargin.left)
+        .attr('y', d => d.set ? setRectY + rectHeight / 2 : rectHeight / 2 + datasetTextHeight)
+        .on('start', d => {
+            if(incCounter) {
+                d.set === 'train' ? sampleSetsCounter[0][d.dataclass]++ : sampleSetsCounter[1][d.dataclass]++;
+                drawClassBarchart();
+            }
+        })
+        .end();
+
+    return Promise.all([circleSelection, rectSelection]);
 }
 
 let resetSamplesAndHistograms = function() {
@@ -429,7 +493,7 @@ let resetSamplesAndHistograms = function() {
         drawClassBarchart();
 
         clearSamples();
-        initSampleData();
+        resetSampleData();
         initSamples();
     }
 }
@@ -516,7 +580,7 @@ d3.select('#split-btn').on('click', () => {
 
     if(splitMode === "index") {
         indexSplit();
-    } else if (splitMode === "shuffled") {
+    } else if (splitMode === "shuffle") {
         shuffleSplit();
     } else if (splitMode === "stratified") {
         stratifiedSplit();
@@ -524,6 +588,24 @@ d3.select('#split-btn').on('click', () => {
         groupSplit();
     }
 });
+
+d3.select('input[name="option"]:checked').on('change', () => {
+    let splitMode = d3.select('input[name="option"]:checked').property("value");
+
+    if(splitMode === "index") {
+        d3.select('#split-description')
+            .html(`The simplest way to split a dataset is by taking the first N samples for training and the remaining samples for testing.
+                    However, this approach may introduce bias into the resulting split, especially if the order entails relationships within data.
+                    Aditionally, it may create imbalanced datasets, hindering the model's ability to learn rare classes.`)
+    } else if (splitMode === "shuffle") {
+        shuffleSplit();
+    } else if (splitMode === "stratified") {
+        stratifiedSplit();
+    } else if (splitMode === "group") {
+        groupSplit();
+    }
+});
+
 
 d3.select('#sort-btn').on('click', () => {
     resetSamplesAndHistograms();

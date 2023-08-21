@@ -188,10 +188,6 @@ You might need to look further and investigate the possible causal factors that 
 risk of pneumonia, they found that asthma patients showed a lower risk of pneumonia. This is counter-intuitive but deeper investigation showed that the asthmatic patients who were directly admitted to the intensive care
     unit, received better care that resulted in a now decreased risk of pneumonia compared to the rest of the population. </p>
 
-    <aside markdown="1">
-      abcd
-    </aside>
-
       <aside>Data relevance: Does the data you are using for the task satisfy the assumptions of your model of
           the world? Are there possible confounders?</aside>
 
@@ -230,27 +226,39 @@ is very difficult to detect at later stages of the pipeline, and you may just be
       <aside>Data splitting is non-trivial and may result in data leakage.</aside>
 
 <d-figure class="l-page" style="display: flex">
-  <div style="flex: 0 0 80%;">
+  <div style="flex: 0 0 15%; display: flex; flex-direction: column; font-size: 10pt; background-color: #f7f7f7; padding: 10px;">
+
+    <div class="flex-row">
+      Legend:
+      <div class="flex-item" style="gap: 30px">
+        <div id="class-legend" class="flex-row" style="gap: 2px"></div>
+        <div id="group-legend" class="flex-row"></div>
+      </div>
+    </div>
+
+    <div class="flex-row">
+      Description:
+      <div class="flex-item" style="gap: 30px">
+        <div id="split-description" class="flex-row" style="font-size: 9pt; line-height: 11pt;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="flex: 0 0 70%;">
     <svg id="stratification" width="100%"></svg>
   </div>
 
-  <div id="controls"
-    style="flex: 0 0 20%; display: flex; flex-direction: column; font-size: 10pt; gap: 10px; background-color: #f7f7f7; padding: 5px 10px;">
-
+  <div id="controls" style="flex: 0 0 15%; display: flex; flex-direction: column; font-size: 10pt; gap: 10px; background-color: #f7f7f7; padding: 10px;">
+  
     <div class="flex-item">
       <button class="button" id="shuffle-btn" style="flex: 1;">Shuffle</button>
       <button class="button" id="sort-btn" style="flex: 1;">Sort</button>
     </div>
 
     <div class="flex-row">
-      <label>Ratio of training to test data: <span id="train-ratio">80</span>%</label>
+      <label>Ratio of training: <span id="train-ratio">80</span>%</label>
       <input id="ratio-slider" class="slider" type="range" value="80" min="10" max="90" step="10" />
     </div>
-
-    <!-- <div class="flex-row">
-      <label>Number of classes: <span id="no_classes">10</span></label>
-      <input id="class-slider" class="slider" type="range" min="2" max="10" step="1" />
-    </div> -->
 
     <div class="flex-row">
       <div class="flex-item">
@@ -289,6 +297,8 @@ is very difficult to detect at later stages of the pipeline, and you may just be
     </div>
   </div>
 </d-figure>
+
+<figcaption style="text-align: center;">Interactive visualization of different dataset splitting techiques. Data is generated randomly on reload.</figcaption>
 
 <p> She continued, with an eye toward her next destination that lay straight ahead of where they were walking. Data leakage is much more
 obvious but splitting can affect the performance of the data in more subtle ways. For example, if you have different subgroups
