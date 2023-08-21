@@ -354,19 +354,31 @@ let drawSampleShadows = function() {
 }
 
 let initSamples = function() {
-    g.selectAll('.sample')
-        .data(samples, k => k.sample)
+    g.selectAll('.sample-rect')
+        .data(samples.filter(s => s.group === 0), k => k.sample)
         .enter()
         .append('circle')
-        .attr('class', 'sample')
+        .attr('class', 'sample sample-circle')
         .attr('r', circleRadius)
         .attr('fill', d => classColors(d.dataclass))
         .attr('cx', d => dataScale(d.sample) + datasetBarMargin.left)
         .attr('cy', rectHeight / 2 + datasetTextHeight)
+
+    g.selectAll('.sample-rect')
+        .data(samples.filter(s => s.group === 1), k => k.sample)
+        .enter()
+        .append('rect')
+        .attr('class', 'sample sample-rect')
+        .attr('width', circleRadius * 2)
+        .attr('height', circleRadius * 2)
+        .attr('transform', `translate(${-circleRadius},${-circleRadius})`)
+        .attr('fill', d => classColors(d.dataclass))
+        .attr('x', d => dataScale(d.sample) + datasetBarMargin.left)
+        .attr('y', rectHeight / 2 + datasetTextHeight)
 }
 
 let updateSamples = function(incCounter=false) {
-    return g.selectAll('.sample')
+    let circleSelection = g.selectAll('.sample-circle')
         .transition()
         .duration(1000)
         .attr('cx', d => d.set ? dataScale(d.sortIdx) + setXOffsetScale(d.set) : dataScale(d.sortIdx) + setXOffsetScale(d.set) + datasetBarMargin.left)
@@ -377,7 +389,22 @@ let updateSamples = function(incCounter=false) {
                 drawClassBarchart();
             }
         })
-        .end()
+        .end();
+
+    let rectSelection = g.selectAll('.sample-rect')
+        .transition()
+        .duration(1000)
+        .attr('x', d => d.set ? dataScale(d.sortIdx) + setXOffsetScale(d.set) : dataScale(d.sortIdx) + setXOffsetScale(d.set) + datasetBarMargin.left)
+        .attr('y', d => d.set ? setRectY + rectHeight / 2 : rectHeight / 2 + datasetTextHeight)
+        .on('start', d => {
+            if(incCounter) {
+                d.set === 'train' ? sampleSetsCounter[0][d.dataclass]++ : sampleSetsCounter[1][d.dataclass]++;
+                drawClassBarchart();
+            }
+        })
+        .end();
+
+    return Promise.all([circleSelection, rectSelection]);
 }
 
 let updateSamplesDelay = function(incCounter=false) {
@@ -438,7 +465,7 @@ const shuffleSplit = async function() {
     updateSamples(true);
 }
 
-const stratifiedsplit = async function() {
+const stratifiedSplit = async function() {
     let classCounter = [0,0];
     classes.forEach((cl, i) => {
         let clSamples = samples.filter(s => s.dataclass === cl);
@@ -467,6 +494,19 @@ const stratifiedsplit = async function() {
     updateSamples();
 }
 
+const groupSplit = async function() {
+    let group1Samples = samples.filter(s => s.group === 0);
+    let group2Samples =samples.filter(s => s.group === 1);
+
+    group1Samples.forEach((e, i) => {e.set = 'train'; e.sortIdx = i});
+    group2Samples.forEach((e, i) => {e.set = 'test'; e.sortIdx = i});
+
+    updateActualSetSize(split, [group1Samples.length, group2Samples.length]);
+    drawSetRects();
+
+    updateSamples(true);
+}
+
 d3.select('#split-btn').on('click', () => {
     let splitMode = d3.select('input[name="option"]:checked').property("value");
     
@@ -476,10 +516,12 @@ d3.select('#split-btn').on('click', () => {
 
     if(splitMode === "index") {
         indexSplit();
-    } else if (splitMode === "shuffle") {
+    } else if (splitMode === "shuffled") {
         shuffleSplit();
     } else if (splitMode === "stratified") {
-        stratifiedsplit();
+        stratifiedSplit();
+    } else if (splitMode === "group") {
+        groupSplit();
     }
 });
 
