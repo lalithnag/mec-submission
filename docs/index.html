@@ -160,7 +160,7 @@ intricate with complex algorithms and databases. Interlinked nodes and circuits 
 a treasure of all what humanity has thus far learnt from data. I notice that you seem troubled by your journey. Worry
           not, I am going to guide you through it.' </p>
 
-<p> Luca could feel a palpable sense of anticipation and wonder in the air. His companion exuded a calming presence, one
+<p> His companion exuded a calming presence, one
     got the feeling she had seen countless travelers like him before and knew exactly how to comfort them.
     With a gentle grasp of his hand, she guided him towards a towering structure that loomed before them,
     pulsating with energy and emanating a soft, harmonious hum permeating the city behind it.
@@ -176,8 +176,8 @@ a treasure of all what humanity has thus far learnt from data. I notice that you
         Delve into its distribution, and keep an eye out for glaring anomalies. Visualizing your data serves as a powerful tool for unearthing hidden insights.
         The <code> seaborn </code> Python library provides a wealth of such visualization resources, including
               <code> seaborn.histplot </code>, and <code> seaborn.pairplot </code>.
-        And when the need arises, you shall venture into the realm of visualizing key data facets, with techniques like
-        principal component analysis or t-SNE visualizations <d-cite key="wattenberg_how_2016"></d-cite>.
+        And when the need arises, you shall visualize the features of your data, with principal component analysis or
+        t-SNE visualizations <d-cite key="wattenberg_how_2016"></d-cite>.
         These methods not only aid in detecting outliers, but
         also unveil patterns in the data, helping you identify and select the most informative features."
 
@@ -185,19 +185,27 @@ a treasure of all what humanity has thus far learnt from data. I notice that you
     outliers? Is your data diversity, representative?</aside>
 <!-- sample image of pair plot and feature distribution plot -->
 
-      <p> You shall strive to see if your data aligns with the fundamental assumptions that you made about your
+      <p> "You shall strive to see if your data aligns with the fundamental assumptions that you made about your
           world. Be vigilant about potential spurious correlations in your dataset. Should such correlations arise,
           conduct a deeper examination to explore potential causal factors or hidden confounders that could underlie
-          these observed effects.
-          Consider for instance, the study that found a significant linear correlation
-          (r=0.791, P<0.0001) <d-cite key="chocolate"></d-cite> between chocolate consumption and the number of Nobel
-          laureates of a country. A deeper look into the underlying factors may be required, before coming to
-          the conclusion that increased chocolate consumption explains an increased cognitive function. With that,
-          the voice slowly waned until it could not be heard anymore, and it was replaced with the sound of the
-          gates slowly moving open into the realm. </p>
-          <!-- Take for example another. During an investigation of a rule-based model to detect
-risk of pneumonia, they found that asthma patients showed a lower risk of pneumonia. This is counter-intuitive but deeper investigation showed that the asthmatic patients who were directly admitted to the intensive care
-    unit, received better care that resulted in a now decreased risk of pneumonia compared to the rest of the population. -->
+          these observed effects." The voice then gradually faded, leaving Luca immersed in silence as he grappled with
+          the unfolding of events. Luca found himself engulfed by anticipation and wonder, pondering whether this was a
+          fleeting glimpse of the <i> Archive of Wisdom. </i> </p>
+
+      <p> At that moment, Luca's companion broke the silence, inquiring, "Did you grasp the essence of the message?" Luca, still
+          somewhat befuddled as he processed the information, struggled to formulate a response.
+          Observing his confusion, she offered further clarity, "Allow me to provide you with a few examples." She began, "Consider,
+          for instance, the research study that uncovered a noteworthy
+          linear correlation (r=0.791, P<0.0001) <d-cite key="chocolate"></d-cite> between chocolate consumption and the number of Nobel
+          laureates of a country. The chocolate intake per capita was found to be correlated with the cognitive function. However, a
+          deeper look into the underlying factors influencing both the observed variables may be required, before coming to
+          a conclusion that increased chocolate consumption <i> explains </i> an increased cognitive function.
+          Similarly, take for example, a rule-based model <d-cite key="10.1145/2783258.2788613"></d-cite> that observed a history
+          of asthma to be associated with a lower risk of pneumonia. Clearly this correlation is counterintuitive. In this case,
+          a deeper look at the possible causal factors reveals that the asthmatic patients were directly admitted to the intensive care
+    unit, and received better care, resulting in a now decreased risk of pneumonia compared to the rest of the population.
+      Their discourse was abruptly interrupted by an intense cacophony, that sounded like the turning of metal cogs,
+          prompting their attention to the gates that were gradually swinging open. </p>
 
       <aside>Does the data you are using for the task satisfy the assumptions of your model of
           the world? Are there possible confounders?</aside>
@@ -219,28 +227,34 @@ see later in our journey. </p> -->
 
 <h3 id="section-2">Chapter 2: A balancing act</h3>
       <a class="marker" href="#top" id="top2"><span>Top</span></a>
-      <p> The two travellers then began their journey to <i> Archive of wisdom </i> at the heart of the realm. Luca's head was brimming
-with all the information he had just received, while his companion, who now looked focused on her immediate surroundings,
-turned to him and started in an anxious tone, 'Dear Luca, a little while ago you learnt about spurious correlations
-          in your data. Sometimes, the way you split the data splitting can introduce
-these relations in your dataset. This is a bigger issue, and we need to speak about it if you intend to proceed further
-          into the realm. It is your responsibility while splitting data into train, test, and validation sets, or
-          while splitting into cross-validation folds, that
-you ensure there is no data leakage. Multitudes before you have failed to ensure this simple fact and have paid the price for it. There is no
-place for these people in the heart of data realm. Splitting your data randomly may sometimes lead to same frames from a surgery, or from a patient
-to fall under both the training and validation set or across different folds. If not ensured during the splitting process, this mode of failure
-is very difficult to detect at later stages of the pipeline, and you may just be convinced that your model performs better. It is a good idea to use sklearn functions
-    to ensure there is no data leakage while splitting your data. </p>
+      <p> The two travellers embarked upon their journey into the heart of the realm, where the <i> Archive of wisdom </i> was said to reside.
+          Luca's head buzzed with the newfound knowledge he had acquired. Meanwhile, his companion, her focus now shifted to their
+      immediate surroundings, turned towards him with a sense of urgency. In an anxious tone, she explained, "Luca, we're about to enter
+      the enchanted forests of the data realm, a crucial part of our journey. These forests are teeming with diverse creatures, some
+      elusive, others freely roaming. While we're explorers here, we're not alone. Our task is to observe, learn, and understand this
+      unique world, but navigating these dense woods requires assistance. The <i>guides</i> of this forest will help us learn and imbibe what
+          these forests have to offer. Our goal is to finally meet the <i> guardians </i>, who sit at its center, guarding its ancient secrets.
+          They remain unseen to our eye. Only when we've learned enough from the guides can we hope to meet the guardians and gain
+          access to the coveted <i> Archive of wisdom </i>.
+
+       <p>She paused, then continued with an analogy for Luca's better understanding, "Let me draw a parallel, Luca. Think of the
+      training dataset as our exploration of the learning space, where we extract knowledge from our data. The performance on the
+      validation set guides us in this process. Ultimately, we evaluate our model's performance on an entirely unseen test dataset.
+      However, it's critical to assign roles wisely, akin to appointing explorers, guides, and guardians. Neglecting this could disrupt
+      the entire ecosystem. You must ensure that these groups—equivalent to your train, validation, and test sets—are completely separate,
+      with no knowledge of each other. In your context, this means avoiding data leakage; for instance, data from the same patient or
+      frames from the same surgery should not be split across different sets.</p>
 
       <aside>Data splitting is non-trivial and may result in data leakage.</aside>
 
-<p> She continued, with an eye toward her next destination that lay straight ahead of where they were walking. Data leakage is much more
-obvious but splitting can affect the performance of the data in more subtle ways. For example, if you have different subgroups
-in your dataset, you need to ensure that each split or the fold of the data adequately represents the distribution of your whole dataset.
-This is called stratified sampling, and can for example be done using the <code>
-        sklearn.model_selection.StratifiedShuffleSplit </code> <d-cite key="noauthor_sklearnmodel_selectionstratifiedshufflesplit_nodate"></d-cite>.
-Otherwise, this will skew your results. Keep in mind that the distribution or the shape of the different classes in your folds must essentially reflect
-    that of your dataset. Similarly, if your data has hierarchies, they must also be reflected in your different splits. </p>
+      <p> "But that's not all," she continued, emphasizing the importance of balance, "these creatures within our forest may
+          come from various heights, some from the high canopies, others from the forest floor, and even some from beneath the
+          earth. To maintain the harmony of this ecosystem, explorers, guides, and guardians must be proportionally represented,
+          just as in the concept of stratification. You must have encountered the <code> sklearn </code> library, particularly the function
+          <code> sklearn.model_selection.StratifiedShuffleSplit </code> <d-cite key="noauthor_sklearnmodel_selectionstratifiedshufflesplit_nodate"></d-cite>, right?
+          Essentially, the distribution or the composition of the different
+          classes or species within your folds must closely resemble that of your entire dataset. Moreover, if your data contains
+          hierarchies, these too must be accurately mirrored within your distinct splits. </p>
 
       <aside>The shape of the class distributions in your split must reflect that in the source dataset.</aside>
 
@@ -325,14 +339,15 @@ Otherwise, this will skew your results. Keep in mind that the distribution or th
           generated randomly on page reload.</figcaption>
       </figure>
 
-      <p> Let us take a more concrete use-case of <i>surgical workflow analysis</i>, where multiple aspects of a
-          surgery come into the pictures, such as surgical phases, and the transitions between them, the occurrence and
-          co-occurrences of different surgical instruments, and the duration or difficulty of a surgery. Depending on
+      <p> I will give you a more concrete analogous use-case of <i>surgical workflow analysis</i>, something you may be familiar with.
+          Here multiple aspects of a surgery come into the picture, such as surgical phases, and the transitions between them,
+          the occurrence and co-occurrences of different surgical instruments, and the duration or difficulty of a surgery. Depending on
           the objectives of the task, there are different ways of splitting the data to reflect the source data
           distribution. Here, stratification can also be applied on multiple levels, such as to group the surgical
-          phases as well as the surgical instruments. Here, visualisation tools such as <a href="https://cardio-ai.github.io/endovis-ml/" target="_blank">Endovis-ML</a> <d-cite
+          phases as well as the surgical instruments. Here, visualisation tools such as
+          <a href="https://cardio-ai.github.io/endovis-ml/" target="_blank">Endovis-ML</a> <d-cite
                   key="kostiuchik_surgical_2023"></d-cite> help in interactively exploring the
-          splits of the data based on different levels of grouping and to ensure no unrepresented classes.
+          splits of the data and ensuring no classes are unrepresented.
       </p>
 
       <aside>The <a href="https://cardio-ai.github.io/endovis-ml/" target="_blank">Endovis-ML</a> helps visualise data splits for surgical workflow analysis
@@ -341,16 +356,17 @@ Otherwise, this will skew your results. Keep in mind that the distribution or th
         </a>
       </aside>
 
-<p> Luca, you have been brave in your journey into the realm of data. You must have also noticed something by now. In here, like in life, some data
-is abundant while some are rare and hard to come by. Take for example the case of rare diseases, say a tumor using
-MRI images. The number of images that contain a tumor may be very limited, which may lead your model to be biased towards the
-majority class, in this case no tumour. This would eventually lead to a misleading evaluation, especially a lower sensitivity,
-and missed detections as a result. There are a few ways to approach this <d-cite key="reinke_common_2023"></d-cite>. One technique is to oversample the
-    minority class by
-generating synthetic data samples. Data augmentation is one method to achieve this. Techniques like SMOTE (Synthetic minority over-sampling
-technique) <d-cite key="chawla_smote_2002"></d-cite> creates new synthetic instances by interpolating between existing minority class instances. Alternatively,
-undersampling the majority class helps balance the classes and reduce risk of overfitting. The downside it that you potentially lose information
-that you could learn from. </p>
+<p> There is something else you should know about these enchanted forests. They are home to various creatures, but some species are
+    rare and elusive, while others are abundant. Sometimes, the people seated in the archive of wisdom
+    intentionally multiply the representation of the rarer species to maintain the harmony of the forests and allowing the minority to thrive.
+    This is akin to the oversampling that you perform, where you artificially generate instances of the minority class of a dataset to make it more proportionate to the
+    majority class. Sometimes we also banish some creatures that are rampant, to ensure balance. This would be similar to undersampling,
+    where the number of instances from the majority class, are reduced, at times randomly, to create a balanced representation and minmize the bias.
+    Take for example the case of detecting a rare diseases, from MRI images. The number of images that contain a tumor may be very limited, which may lead your model to
+    be biased towards the majority class, in this case no tumour. This would eventually lead to a misleading evaluation,
+    especially a lower sensitivity, and missed detections as a result. There are a multiple ways to
+    oversample <d-cite key="reinke_common_2023"></d-cite> such as data augmentation, or using techniques like SMOTE (Synthetic minority
+    over-sampling technique) <d-cite key="chawla_smote_2002"></d-cite> which creates new synthetic instances by interpolating between existing minority class instances.</p>
 
       <aside>Oversampling and undersampling are two techniques to deal with data imbalance and rare cases.</aside>
 
