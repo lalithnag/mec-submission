@@ -124,8 +124,8 @@
       <a class="marker" href="#section-3" id="section3"><span>3: Data shifts</span></a>
       <p> It was on a warm and breezy Friday afternoon that Luca, having indulged in a heavy lunch, found himself
           gazing at a determined squirrel
-        that was perched on his window sill. The squirrel, clutching a stubborn nutshell with its tiny paws, executed an array of maneuvers with
-        intense focus. It began by turning the nut around, testing its angles and seams, while steadily biting and gnawing with determination.
+        that was perched on his window sill. The squirrel, clutching a stubborn nutshell with her tiny paws, executed an array of maneuvers with
+        intense focus. She began by turning the nut around, testing its angles and seams, while steadily biting and gnawing with determination.
         Luca couldn't help draw a parallel to the time he had spent poring over lines of code, navigating the maze of his dataset with little success.
         Memories came rushing of the hours spent babysitting his model, in pursuit of a reasonable loss curve. Despite his best efforts,
         the model that had performed so well on the reported data inexplicably and repeatedly failed on his dataset. The model doesn't generalize,
@@ -172,25 +172,25 @@ a treasure of all what humanity has thus far learnt from data. I notice that you
 
     <p> As Luca's hands met the gates, a vivid spectacle enveloped his senses. Swirling histograms and pair plots
         surrounded him, and he caught faint echoes of a voice, which might have been his companion's or something altogether different—he could not
-        discern. 'Your journey is one of exploration,' the voice resonated. 'Before surrendering your data to a model, you shall embark on the quest to comprehend it.
+        discern. <i> Your journey is one of exploration,</i> the voice resonated. <i> Before surrendering your data to a model, you shall embark on the quest to comprehend it.
         Delve into its distribution, and keep an eye out for glaring anomalies. Visualizing your data serves as a powerful tool for unearthing hidden insights.
         The <code> seaborn </code> Python library provides a wealth of such visualization resources, including
               <code> seaborn.histplot </code>, and <code> seaborn.pairplot </code>.
         And when the need arises, you shall visualize the features of your data, with principal component analysis or
         t-SNE visualizations <d-cite key="wattenberg_how_2016"></d-cite>.
         These methods not only aid in detecting outliers, but
-        also unveil patterns in the data, helping you identify and select the most informative features."
+        also unveil patterns in the data, helping you identify and select the most informative features.</i>
 
             <aside>Is your data complete? Have you explored and visualised your data? Have you identified
     outliers? Is your data diversity, representative?</aside>
 <!-- sample image of pair plot and feature distribution plot -->
 
-      <p> "You shall strive to see if your data aligns with the fundamental assumptions that you made about your
+      <p> <i> You shall strive to see if your data aligns with the fundamental assumptions that you made about your
           world. Be vigilant about potential spurious correlations in your dataset. Should such correlations arise,
           conduct a deeper examination to explore potential causal factors or hidden confounders that could underlie
           these observed effects." The voice then gradually faded, leaving Luca immersed in silence as he grappled with
           the unfolding of events. Luca found himself engulfed by anticipation and wonder, pondering whether this was a
-          fleeting glimpse of the <i> Archive of Wisdom. </i> </p>
+          fleeting glimpse of the Archive of Wisdom. </i> </p>
 
       <p> At that moment, Luca's companion broke the silence, inquiring, "Did you grasp the essence of the message?" Luca, still
           somewhat befuddled as he processed the information, struggled to formulate a response.
@@ -341,10 +341,9 @@ see later in our journey. </p> -->
 
       <p> I will give you a more concrete analogous use-case of <i>surgical workflow analysis</i>, something you may be familiar with.
           Here multiple aspects of a surgery come into the picture, such as surgical phases, and the transitions between them,
-          the occurrence and co-occurrences of different surgical instruments, and the duration or difficulty of a surgery. Depending on
-          the objectives of the task, there are different ways of splitting the data to reflect the source data
-          distribution. Here, stratification can also be applied on multiple levels, such as to group the surgical
-          phases as well as the surgical instruments. Here, visualisation tools such as
+          the occurrence and co-occurrences of different surgical instruments, and the duration or difficulty of a surgery.
+          Also considering the hierarchical relations of these aspects, creating representative splits of surgical workflow data
+          can be quite a challenge. Here, visualisation tools such as
           <a href="https://cardio-ai.github.io/endovis-ml/" target="_blank">Endovis-ML</a> <d-cite
                   key="kostiuchik_surgical_2023"></d-cite> help in interactively exploring the
           splits of the data and ensuring no classes are unrepresented.
@@ -387,45 +386,32 @@ see later in our journey. </p> -->
 
       <aside>Model performance tends to degrade over time due to the temporal nature of data and model shifts.</aside>
 
-<p> For example, assume you have the task of predicting
-tumor volume from features learnt from CT scans <d-cite key="dockes_preventing_2021"></d-cite>. The size of the tumor (X) is not only influenced by the image features (Y) but also a contrast agent (M).
-Here, selecting images of high resolution, or selecting images that have a particular strength of contrast agent, both introduce bias in selecting
-the data. The tumor volume learnt as a result is from a subset of the data that was had certain biases in the sampling, and now when the model
-encounters data from the wild, it has trouble to adapt to this shift in the distribution. One way to tackles this problem is by _importance weighting_.
-This means weighting your data as per the importance expected to be observed in the target distribution. For instance, the attributes that are rarely seen
-observed in the source dataset but are more likely to be seen in the target dataset are assigned more importance. Another approach is to use
-uncertainty estimation to make the model robust to shifts that are expected to be observed.
-Keep in mind that it is not just data, but new relationships can evolve over time from your data. This is called _concept shift_.
-Take for example, a model that predicts patient mortality based on pneumonia <d-cite key="huang_developing_2022"></d-cite>. The arrival of Covid-19 introduced a novel class as compared to bacterial
-pneumonia. Often a combination of both shifts may be observed in the real world. In the same example for instance, a model trained on
-    pre-covid vaccination data may overestimate risk for a vaccinated population. </p>
+<p> Take for instance, this example <d-cite key="dockes_preventing_2021"></d-cite>, where you have the task of predicting tumor volume (Y),
+    using features learned from CT scans (X). The size of the tumor is also influenced by say, the contrast agent (M). Here,
+    sampling the data independently of these parameters would avoid a shift in data, whereas sampling based on the images (rejecting low resolution
+    images) or the contrast agent (low does of contrast agent), may introduce a bias or a data shift, thereby impacting your model
+    performance on test data. Analogously, you can think of the task of maintaining a moving map that will guide you in the right path
+    to the archive at all times. To do this, you can constantly take snapshots of the valley and keep track of the changes. But, if
+    the snapshots are all taken at a particular time of day, or from one place, this may introduce bias into your map because it doesn't accurately
+    reflect the true nature of the ever-changing environment. Some ways to tackle this are by <i> importance weighting </i> your data, for example as
+    per the occurrence of the features you expected to observe in the target distribution. For instance, the attributes that are rarely seen
+    observed in the source dataset but are more likely to be seen in the target dataset are assigned more importance. Another approach is to use
+    uncertainty estimation to make the model robust to shifts that are expected to be observed. I've taught you enough Luca, it's time for me to go.</p>
 
       <aside>Data shifts occur when the joint distribution or prevalence of the data changes while the relationship
           between the input and output variables remains the same.</aside>
 
           <figure>
       <img src="assets/giab055fig3.jpg">
-      <figcaption style="text-align: center;">Sample selection bias: three examples. On the right are graphs giving conditional independence relations <d-cite key="pearl_causal_2016"></d-cite>.
-          Y is the lesion volume to be predicted (i.e., the output). M are the imaging parameters, e.g., contrast agent dosage. X is the image,
-          and depends both on Y and M (in this toy example X is computed as X:= Y+M, where ϵ is additive noise). S
-          indicates that data are selected
-          to enter the source dataset (orange points) or not (blue points). The symbol equation ⊥⊥ means independence between variables.
+      <figcaption style="text-align: center;">Sample selection bias: three examples. On the right are graphs giving conditional
+          independence relations <d-cite key="pearl_causal_2016"></d-cite>.
+          Y is the lesion volume to be predicted (i.e., the output). M are the imaging parameters, e.g., contrast agent dosage.
+          X is the image, and depends both on Y and M. S indicates that data are selected to enter the source dataset (orange points)
+          or not (blue points). The symbol equation ⊥⊥ means independence between variables.
           Preferentially selecting samples results in a dataset shift (middle and bottom row). Depending on whether
-          equation Y⊥⊥S|X,
-          the conditional distribution of Y|X—here lesion volume given the image—estimated on the selected data may be
+          equation Y⊥⊥S|X, the conditional distribution of Y|X—here lesion volume given the image—estimated on the selected data may be
           biased or not. <d-cite key="dockes_preventing_2021"></d-cite></figcaption>
       </figure>
-
-<p> After his long and winding journey, Luca now stood in the heart of the realm. He was at the precipice of the hallowed archive of wisdom,
-waiting with a sense of anticipation in every breath.
-Yet, when he glanced behind, his faithful companion, who had been his guide, had vanished, leaving him with a trail of memories and the
-knowledge shared. It was as if her purpose had been fulfilled, and her absence was now a testament to where Luca was in his journey.
-As his foot touched the ground, a sudden disorientation swept over him, as he stumbled backward with a loud thud.
-The world around him flickered and dimmed. When his eyes blinked open, he found himself sprawled on the floor of his office,
-seemingly fallen from his office chair. The shifting visions of the DataRealm had vanished, giving way to the familiar sights of his
-cluttered desk. His model had now finished training.
-With a thoughtful grin, Luca outside to find his old friend, the squirrel, still perched on the window sill.
-    Having cracked open the shell, he was now savouring the treasures of his labour with a glint in his eye. </p>
 
       <figure>
       <img src="assets/squirrel.png">
@@ -433,6 +419,20 @@ With a thoughtful grin, Luca outside to find his old friend, the squirrel, still
     </figure>
 
       <aside>This is the sign you were looking for :)</aside>
+
+      <p> With as simple a farewell, she departed, leaving Luca to navigate the ever-changing paths of the valley.
+          Luca, now tantalizingly close to the archive, awaited its presence with bated breath, filled with excitement.
+          However, when he glanced backward, his steadfast companion, who had guided him throughout, had mysteriously disappeared.
+          She left behind a trail of cherished memories and knowledge. It was as if her purpose had been fulfilled,
+          and her absence now served as a testament to Luca's progress on this transformative journey.
+          As Luca's foot made contact with the ground, he stumbled
+          backward with a resounding thud, in a sudden wave of disorientation. The world around him flickered and dimmed.
+          When he finally opened his eyes, he found
+          himself sprawled on the floor of his office, seemingly having fallen from his chair. The ethereal visions of the DataRealm
+          had faded, replaced by the familiar sights of his cluttered desk. His model had now completed its training. With a thoughtful
+          smile, Luca outside to find his old friend, the squirrel, still perched on the window sill, having cracked open the shell.
+          For the briefest of moments, it almost seemed as if she had winked at him, before scampering away to savor the fruits of
+          her labor with a glint in her eye. </p>
 
   </d-article>
 
