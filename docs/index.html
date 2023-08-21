@@ -225,80 +225,86 @@ is very difficult to detect at later stages of the pipeline, and you may just be
 
       <aside>Data splitting is non-trivial and may result in data leakage.</aside>
 
-<d-figure class="l-page" style="display: flex">
-  <div style="flex: 0 0 15%; display: flex; flex-direction: column; font-size: 10pt; background-color: #f7f7f7; padding: 10px;">
+<figure class="l-page">
+  <div style="display: flex">
+    <div style="flex: 0 0 15%; display: flex; flex-direction: column; font-size: 10pt; gap: 10px; background-color: #f7f7f7; padding: 10px;">
 
-    <div class="flex-row">
-      Legend:
-      <div class="flex-item" style="gap: 30px">
-        <div id="class-legend" class="flex-row" style="gap: 2px"></div>
-        <div id="group-legend" class="flex-row"></div>
+      <div class="flex-row">
+        Legend:
+        <div class="flex-item" style="gap: 30px">
+          <div id="class-legend" class="flex-row" style="gap: 2px; line-height: 13pt;"></div>
+          <div id="group-legend" class="flex-row" style="line-height: 13pt;"></div>
+        </div>
+      </div>
+
+      <div class="flex-row">
+        Description:
+        <div class="flex-item" style="gap: 30px">
+          <div id="split-description" class="flex-row" style="font-size: 9pt; line-height: 11pt; text-justify: auto;">
+            The straightforward way to split a dataset is to take the first N samples for training and the remaining samples for testing.
+            However, this approach may introduce bias into the resulting dataset split, especially if the order of the samples entails relationships within the data.
+            Additionally, it may create sets that do not reflect the distribution of the source dataset or do not cover all classes.
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="flex-row">
-      Description:
-      <div class="flex-item" style="gap: 30px">
-        <div id="split-description" class="flex-row" style="font-size: 9pt; line-height: 11pt;"></div>
+    <div style="flex: 0 0 70%;">
+      <svg id="stratification" width="100%"></svg>
+    </div>
+
+    <div id="controls" style="flex: 0 0 15%; display: flex; flex-direction: column; font-size: 10pt; gap: 10px; background-color: #f7f7f7; padding: 10px;">
+
+      <div class="flex-row" style="gap: 5px">
+        Dataset ordering:
+        <div class="flex-item">
+          <button class="button" id="class-sort-btn" style="flex: 1;">Class</button>
+          <button class="button" id="group-sort-btn" style="flex: 1;">Group</button>
+          <button class="button" id="shuffle-btn" style="flex: 1;">Shuffle</button>
+        </div>
+      </div>
+
+      <div class="flex-row">
+        <label>Ratio of training data: <span id="train-ratio">80</span>%</label>
+        <input id="ratio-slider" class="slider" type="range" value="80" min="10" max="90" step="10" />
+      </div>
+
+      <div class="flex-row">
+        <div class="flex-item">
+          <legend>Split options:</legend>
+        </div>
+
+        <div class="flex-item">
+          <input type="radio" id="index-split" value="index" name="option" checked>
+          <label for="index-split">Index split</label>
+        </div>
+
+        <div class="flex-item">
+          <input type="radio" id="shuffle-split" value="shuffle" name="option">
+          <label for="shuffle-split">Shuffle split</label>
+        </div>
+
+        <div class="flex-item">
+          <input type="radio" id="stratified-split" value="stratified" name="option">
+          <label for="stratified-split">Stratified split</label>
+        </div>
+
+        <div class="flex-item">
+          <input type="radio" id="group-split" value="group" name="option">
+          <label for="group-split">Group split</label>
+        </div>
+
+      </div>
+      <div class="flex-item">
+        <button class="button" id="split-btn" style="flex: 3;">Split data</button>
+        <button class="button" id="reset-btn" style="flex: 1;">Reset</button>
       </div>
     </div>
+
   </div>
-
-  <div style="flex: 0 0 70%;">
-    <svg id="stratification" width="100%"></svg>
-  </div>
-
-  <div id="controls" style="flex: 0 0 15%; display: flex; flex-direction: column; font-size: 10pt; gap: 10px; background-color: #f7f7f7; padding: 10px;">
-  
-    <div class="flex-item">
-      <button class="button" id="shuffle-btn" style="flex: 1;">Shuffle</button>
-      <button class="button" id="sort-btn" style="flex: 1;">Sort</button>
-    </div>
-
-    <div class="flex-row">
-      <label>Ratio of training: <span id="train-ratio">80</span>%</label>
-      <input id="ratio-slider" class="slider" type="range" value="80" min="10" max="90" step="10" />
-    </div>
-
-    <div class="flex-row">
-      <div class="flex-item">
-        <legend>Split options:</legend>
-      </div>
-
-      <div class="flex-item">
-        <input type="radio" id="index-split" value="index" name="option" checked>
-        <label for="index-split">Index split</label>
-      </div>
-
-      <div class="flex-item">
-        <input type="radio" id="shuffle-split" value="shuffle" name="option">
-        <label for="shuffle-split">Shuffle split</label>
-      </div>
-
-      <div class="flex-item">
-        <input type="radio" id="stratified-split" value="stratified" name="option">
-        <label for="stratified-split">Stratified split</label>
-      </div>
-
-      <div class="flex-item">
-        <input type="radio" id="group-split" value="group" name="option">
-        <label for="group-split">Group split</label>
-      </div>
-      <!-- <button id="btn1">Without shuffling</button>
-                        <button id="btn2">Shuffled split</button>
-                        <button disabled>Stratified split</button>
-                        <button disabled>Group split</button>
-                        <button disabled>Group shuffle split</button> -->
-
-    </div>
-    <div class="flex-item">
-      <button class="button" id="split-btn" style="flex: 3;">Split data</button>
-      <button class="button" id="reset-btn" style="flex: 1;">Reset</button>
-    </div>
-  </div>
-</d-figure>
-
-<figcaption style="text-align: center;">Interactive visualization of different dataset splitting techiques. Data is generated randomly on reload.</figcaption>
+  <figcaption style="text-align: center;">Interactive visualization of different dataset splitting techiques. Data is
+    generated randomly on page reload.</figcaption>
+</figure>
 
 <p> She continued, with an eye toward her next destination that lay straight ahead of where they were walking. Data leakage is much more
 obvious but splitting can affect the performance of the data in more subtle ways. For example, if you have different subgroups

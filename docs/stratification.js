@@ -1,7 +1,7 @@
 import { generateSamples, shuffleSamples, splitToFiles } from "./util.js";
 
 const margin = {top: 0, right: 10, bottom: 0, left: 10};
-const svgHeight = 400;
+const svgHeight = 380;
 const svgWidth = d3.select('#stratification').node().getBoundingClientRect().width;
 
 const classes = d3.range(4);
@@ -589,28 +589,45 @@ d3.select('#split-btn').on('click', () => {
     }
 });
 
-d3.select('input[name="option"]:checked').on('change', () => {
-    let splitMode = d3.select('input[name="option"]:checked').property("value");
+d3.selectAll('input[name="option"]').on('change', e => {
+    let splitMode = d3.select(e.currentTarget).property("value");
 
     if(splitMode === "index") {
         d3.select('#split-description')
-            .html(`The simplest way to split a dataset is by taking the first N samples for training and the remaining samples for testing.
-                    However, this approach may introduce bias into the resulting split, especially if the order entails relationships within data.
-                    Aditionally, it may create imbalanced datasets, hindering the model's ability to learn rare classes.`)
+            .html(`The straightforward way to split a dataset is to take the first N samples for training and the remaining samples for testing.
+                   However, this approach may introduce bias into the resulting dataset split, especially if the order of the samples entails relationships within the data.
+                   Additionally, it may create sets that do not reflect the distribution of the source dataset or do not cover all classes.`)
     } else if (splitMode === "shuffle") {
-        shuffleSplit();
+        d3.select('#split-description')
+            .html(`To avoid introducing the bias that results from data ordering, the samples can be shuffled before splitting.
+                   This will yield more reliable evaluation results.`)
     } else if (splitMode === "stratified") {
-        stratifiedSplit();
+        d3.select('#split-description')
+            .html(`To obtain meaningful evaluation results, the distribution of the resulting sets should reflect the distribution of the source dataset.
+                   However, this is not easy to achieve by simply shuffling the dataset, especially if the classes are highly imbalanced.
+                   Stratified sampling aims to preserve the original distribution of classes in the training and test sets.`)
     } else if (splitMode === "group") {
-        groupSplit();
+        d3.select('#split-description')
+            .html(`You may have noticed that both training and test sets contain samples of two different groups. One such grouping can be the ID of the patient.
+                   By having samples from the same patient in the training and test sets, we introduce data leak which usually results in overly optimistic evaluation results.
+                   To avoid this, we need to ensure that training and test sets contain samples from different patients.`)
     }
 });
 
-
-d3.select('#sort-btn').on('click', () => {
+d3.select('#class-sort-btn').on('click', () => {
     resetSamplesAndHistograms();
 
     samples.sort((a, b) => a.dataclass - b.dataclass);
+
+    samples.forEach((s, i) => s.sortIdx = i);
+
+    updateSamples();
+});
+
+d3.select('#group-sort-btn').on('click', () => {
+    resetSamplesAndHistograms();
+
+    samples.sort((a, b) => a.group - b.group);
 
     samples.forEach((s, i) => s.sortIdx = i);
 
