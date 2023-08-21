@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="33f91116-e573-43ca-b3b5-a047cb9d89c0" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +32,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "Merging charts",
+    "git-widget-placeholder": "charts",
     "last_opened_file_path": "/Users/lalith/mec-submission",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -39,6 +40,11 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "Markdown"
+    ]
   }
 }]]></component>
   <component name="RecentsManager">
@@ -60,7 +66,7 @@
       <workItem from="1692215810752" duration="5255000" />
       <workItem from="1692471133139" duration="4607000" />
       <workItem from="1692475915891" duration="2000" />
-      <workItem from="1692475937928" duration="8173000" />
+      <workItem from="1692475937928" duration="12487000" />
     </task>
     <servers />
   </component>
