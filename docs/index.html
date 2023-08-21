@@ -119,7 +119,7 @@
 
 
   <d-article>
-      <a class="marker" href="#section-1" id="section1"><span>1: Data quality</span></a>
+      <a class="marker" href="#section-1" id="section1"><span>1: Data exploration</span></a>
       <a class="marker" href="#section-2" id="section2"><span>2: Data splits</span></a>
       <a class="marker" href="#section-3" id="section3"><span>3: Data shifts</span></a>
       <p> It was on a warm and breezy Friday afternoon that Luca, having indulged in a heavy lunch, found himself
@@ -132,20 +132,19 @@
           <i> it just doesn't generalize </i>. At that very moment, a gentle breeze swept in and comforted him. Gradually, he sensed his thoughts slowing down,
         his focus dwindling and his eyelids growing heavier...when an unexpected touch on his shoulder jolted him. </p>
 
-
-
-      <q> Come with me. Now. There's no time to explain </q>
-      <q> Wh..What? </q>
+      <q> <i> Come with me. Now. There's no time to explain </i> </q>
+      <q> <i> Wh..What? </i> </q>
 
 
     <h3 id="section-1">Chapter 1: Explorers</h3>
       <a class="marker" href="#top" id="top1"><span>Top</span></a>
       <p> And so it was, that Luca now found himself in a strange and peculiar land. What he saw seemed both familiar and foreign to him, as he stared in disbelief
-    at the boundless expanse that lay in front of him. Suddenly, Luca's thoughts turned to the unfinished work, his model that was probably training, the cluttered desk and the creaky chair that he
+    at the boundless expanse that lay before him. Suddenly, Luca's thoughts turned to the unfinished work, his model
+          that was probably training, the cluttered desk and the creaky chair that he
     left behind, all of which seemed like a world far far away from the one he was now standing in.
-    He was overcome with confusion regarding the nature of his journey and the identity of the woman who had accompanied
-    him here. As he glanced to his left in her direction, he had a feeling that she could perceive his confusion. As if in response, she proceeded to talk,
-    'Greetings to the land of DataRealm, where all data lives. Here, information flows like rivers and mountains of code rise into the sky.
+    He was overcome with confusion regarding the nature of his journey and the identity of the woman who had led
+    him here. As if sensing his doubt, she proceeded to announce, 'Greetings to the land of DataRealm, where all data lives.
+          Here, information flows like rivers and mountains of code rise into the sky.
           This is a realm of creation and discovery, where the human spirit and the digital domain converge to form a connected whole.' </p>
 
       <figure>
@@ -156,39 +155,51 @@
 
       <p> As his eyes swept across the landscape, it slowly dawned upon him, as he faintly noticed gigantic crystalline structures in a distance that stood tall,
 intricate with complex algorithms and databases. Interlinked nodes and circuits sprawled out like arteries, each a nexus of complex information, thoughts, and ideas.
-          It was as if the whole world around him was drowning in the very essence of information and understanding. Sensing his bewilderment, she continued, 'Deep within the heart of this land lies the <i>Archive of Wisdom</i>,
-a treasure of all what humanity has thus far learnt from data. I see you have been in a lot of turmoil. Worry not, I am now going to take you there.'
-Luca was just processing all that he had heard, wondering if this was all an elaborate joke. 'However my friend, we first need to pass through the three majestic spires that stand in front of us.'
-</p>
+          It was as if the whole world around him was drowning in the very essence of information and understanding. She continued,
+          'Deep within the heart of this land lies the <i>Archive of Wisdom</i>,
+a treasure of all what humanity has thus far learnt from data. I notice that you seem troubled by your journey. Worry
+          not, I am going to guide you through it.' </p>
 
-<p> She held his hand and stepped toward the three tall structures that stood immediately before him, pulsating with energy, emitting soft and harmonious hums that echoed through the city behind it.
-These towers stand in memoriam of all the data that have been misused, neglected, tortured, and sacrificed to fit a narrative. Luca, remember what they stand for, that you shall not repeat
-the same mistakes. The first spire to your right, stands in the name of <i>Data Integrity</i>. It teaches us to always explore and understand your data before plunging into a task.
-    Data has many insights that can be unearthed only through earnest poking and prying, and then lingering to listen to what it has to say. </p>
+<p> Luca could feel a palpable sense of anticipation and wonder in the air. His companion exuded a calming presence, one
+    got the feeling she had seen countless travelers like him before and knew exactly how to comfort them.
+    With a gentle grasp of his hand, she guided him towards a towering structure that loomed before them,
+    pulsating with energy and emanating a soft, harmonious hum permeating the city behind it.
+    Luca, initially puzzled, began to realize the significance of their journey.
+    'To embark on this journey, you must first pass through these gates. These gates stand in memoriam to all the
+    data that has been misused, neglected, tortured, and sacrificed to fit a narrative. Taking his hands and placing
+    them gently upon the gates, she added 'Remember what they stand for, that you shall not repeat the same
+    mistakes.' </p>
 
-      <aside>Data integrity: Is your data complete? Have you explored and visualised your data? Have you identified
+    <p> As Luca's hands met the gates, a vivid spectacle enveloped his senses. Swirling histograms and pair plots
+        surrounded him, and he caught faint echoes of a voice, which might have been his companion's or something altogether different—he could not
+        discern. 'Your journey is one of exploration,' the voice resonated. 'Before surrendering your data to a model, you shall embark on the quest to comprehend it.
+        Delve into its distribution, and keep an eye out for glaring anomalies. Visualizing your data serves as a powerful tool for unearthing hidden insights.
+        The <code> seaborn </code> Python library provides a wealth of such visualization resources, including
+              <code> seaborn.histplot </code>, and <code> seaborn.pairplot </code>.
+        And when the need arises, you shall venture into the realm of visualizing key data facets, with techniques like
+        principal component analysis or t-SNE visualizations <d-cite key="wattenberg_how_2016"></d-cite>.
+        These methods not only aid in detecting outliers, but
+        also unveil patterns in the data, helping you identify and select the most informative features."
+
+            <aside>Is your data complete? Have you explored and visualised your data? Have you identified
     outliers? Is your data diversity, representative?</aside>
-
-<p> 'How do I do this?' asked Luca feverishly. She smiled and proceeded, 'Your first step is to perform an exploratory data analysis. Here, you need to explore the distribution of your dataset, and
-pause to think if it agrees with the underlying assumptions made about the data that you have observed. In more concrete terms, first understand the data distribution by plotting histograms, and looking for
-any obvious outliers. Additionally, you can use pair plots, for example, <code>seaborn.pairplot</code> <d-cite
-            key="noauthor_seabornpairplot_nodate"></d-cite> to visualise the pair wise occurrences of features or the
-    correlations between
-    features. Further, dimensionality reduction methods like principal component analysis,
-    and t-SNE visualisations help determine the salient features of your data <d-cite
-            key="wattenberg_how_2016"></d-cite>.</p>
-
 <!-- sample image of pair plot and feature distribution plot -->
 
-      <p> 'Luca, answer me this', she said, softly looking upward to the middle spire. <i> Crystal clear when uttered aloud, yet the crowd's notice I often shroud. What am I? </i>. After seeing Luca's slightly embarrassed and pondering look,
-she continued <i>Data Relevance</i>. A lot of people take it for granted that defining a task on a dataset automatically implies the data is relevant to the task, but this may not be true in all cases. Let me explain. There is
-a well-known story in our realm about the significant linear correlation discovered between the per-capita consumption of chocolate in a country and the Nobel laureates that it produces (r=0.791, P<0.0001) <d-cite key="chocolate"></d-cite>.
-Although this correlation is undeniable, you would do well to stop and think about possible confounders that may introduce spurious correlations into your model of the world.
-You might need to look further and investigate the possible causal factors that may underlie both these observed effects. Let me give you another example Luca. During an investigation of a rule-based model to detect
+      <p> You shall strive to see if your data aligns with the fundamental assumptions that you made about your
+          world. Be vigilant about potential spurious correlations in your dataset. Should such correlations arise,
+          conduct a deeper examination to explore potential causal factors or hidden confounders that could underlie
+          these observed effects.
+          Consider for instance, the study that found a significant linear correlation
+          (r=0.791, P<0.0001) <d-cite key="chocolate"></d-cite> between chocolate consumption and the number of Nobel
+          laureates of a country. A deeper look into the underlying factors may be required, before coming to
+          the conclusion that increased chocolate consumption explains an increased cognitive function. With that,
+          the voice slowly waned until it could not be heard anymore, and it was replaced with the sound of the
+          gates slowly moving open into the realm. </p>
+          <!-- Take for example another. During an investigation of a rule-based model to detect
 risk of pneumonia, they found that asthma patients showed a lower risk of pneumonia. This is counter-intuitive but deeper investigation showed that the asthmatic patients who were directly admitted to the intensive care
-    unit, received better care that resulted in a now decreased risk of pneumonia compared to the rest of the population. </p>
+    unit, received better care that resulted in a now decreased risk of pneumonia compared to the rest of the population. -->
 
-      <aside>Data relevance: Does the data you are using for the task satisfy the assumptions of your model of
+      <aside>Does the data you are using for the task satisfy the assumptions of your model of
           the world? Are there possible confounders?</aside>
 
     <figure class="l-page">
@@ -196,27 +207,25 @@ risk of pneumonia, they found that asthma patients showed a lower risk of pneumo
       <figcaption style="text-align: center;">Correlation between Countries' Annual Per Capita Chocolate Consumption and the Number of Nobel
         Laureates per 10 Million Population <d-cite key="chocolate"></d-cite>.</figcaption>
     </figure>
-<p> And finally, remember, splitting your data can also end up introducing spurious correlations in your dataset. Remember the time when this work, which presented state-of-the-art performance that was better
+
+    <!--finally, remember, splitting your data can also end up introducing spurious correlations in your dataset. Remember the time when this work, which presented state-of-the-art performance that was better
 than human radiologists in detecting pneumonia from chest X-rays <d-cite key="rajpurkar_chexnet_2017"></d-cite>. This
     work invited attention and critique regarding the data splits used <d-cite
             key="botz_few_2017,laurenoakdenrayner_chexnet_2018"></d-cite>. Now I am not questioning the validity
     of this
     work, but rather pointing your attention
 to the importance of explicitly outlining your data splits in the pipeline to the extent possible. It is not trivial, as we will
-see later in our journey. I now urge you to pay your respects to the structure standing on the left in the name of <i>Data Security</i>. The data that is valuable to us can serve us only as long as we can protect
-it, and not let it fall under the hands of bad actors. This means, ensuring anonymization and checking the data pipeline for potential
-vulnerabilities. One must indeed to check the scope to which the data is exposed, and if necessary shield sensitive data from parts of your pipeline. Some may even turn to differential privacy or federated learning in
-    this regard. </p>
-
-            <aside>Data security: Verify the scope to which the data is exposed.</aside>
+see later in our journey. </p> -->
 
 <h3 id="section-2">Chapter 2: A balancing act</h3>
       <a class="marker" href="#top" id="top2"><span>Top</span></a>
       <p> The two travellers then began their journey to <i> Archive of wisdom </i> at the heart of the realm. Luca's head was brimming
 with all the information he had just received, while his companion, who now looked focused on her immediate surroundings,
-turned to him and started in an anxious tone, 'Dear Luca, a little while ago I told you about data splitting and how it could introduce
-spurious relations learnt from your dataset. This is a bigger issue, and we need to speak about it if you intend to proceed further into the realm.
-It is our utmost responsibility while splitting data into train, test, and validation sets, or while splitting into cross-validation folds, that
+turned to him and started in an anxious tone, 'Dear Luca, a little while ago you learnt about spurious correlations
+          in your data. Sometimes, the way you split the data splitting can introduce
+these relations in your dataset. This is a bigger issue, and we need to speak about it if you intend to proceed further
+          into the realm. It is your responsibility while splitting data into train, test, and validation sets, or
+          while splitting into cross-validation folds, that
 you ensure there is no data leakage. Multitudes before you have failed to ensure this simple fact and have paid the price for it. There is no
 place for these people in the heart of data realm. Splitting your data randomly may sometimes lead to same frames from a surgery, or from a patient
 to fall under both the training and validation set or across different folds. If not ensured during the splitting process, this mode of failure
@@ -419,6 +428,10 @@ With a thoughtful grin, Luca outside to find his old friend, the squirrel, still
   <d-appendix>
     <h3>Note</h3>
       <p>This article is a submission to the MICCAI Educational Challenge 2023</p>
+      <h3>Acknowledgements</h3>
+      <p>The authors would like to acknowledge the contributions of Lorenz Quack, Halvar Kelm, and Dale Chrislene
+          for their valuable inputs and suggestions.</p>
+
     <d-bibliography src="bibliography.bib"></d-bibliography>
   </d-appendix>
 
